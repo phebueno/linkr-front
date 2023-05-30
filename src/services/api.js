@@ -7,10 +7,14 @@ function createConfig(token) {
 }
 
 //Criar as requisições HTTP para o nosso back
-
+function getPosts(token){
+    const config = createConfig(token);
+    const promise = axios.get(`${BASE_URL}/posts`, config);
+    return promise;
+}
 
 const api = {
-
+    getPosts,
 }
 
 export default api;
