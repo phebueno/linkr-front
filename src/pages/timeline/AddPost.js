@@ -66,21 +66,19 @@ export default function AddPost() {
 const FormContainer = styled.div`
     display: flex;
     position: relative;
-    width: 50vw;
-    max-width: 611px;
-    height: 200px;
-    margin: 70px auto;
     padding: 20px;
     background: #FFFFFF;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 16px;
+    margin-bottom: 36px;
     img{
         width: 53px;
         height: 53px;
         border-radius: 53px;
+        object-fit: cover;
     }
     div{
-        margin-right: 10px;
+        margin-right: 15px;
     }
     span{
         position: absolute;
@@ -95,6 +93,7 @@ const FormContainer = styled.div`
 const Form = styled.form`
     display: flex;
     flex-direction: column;
+    width: 100%;
     h1{
         font-family: 'Lato';
         font-style: normal;
@@ -106,6 +105,7 @@ const Form = styled.form`
     }
     input:last-of-type {
         height: 66px;
+        margin-bottom: 30px;
     }
 `
 
@@ -118,6 +118,7 @@ const Input = styled.input`
     border: none;
     margin-bottom: 5px;
     padding: 10px;
+    width: 100%;
 `
 
 const Button = styled.button`

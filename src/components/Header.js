@@ -14,7 +14,7 @@ export default function Header(){
         <HeaderContainer>
             <Titulo>Linkr</Titulo>
             <Profile>
-                {showLogout ? 
+                {!showLogout ? 
                     ( <AiOutlineDown onClick={() => setShowLogout(!showLogout)} /> ) : (
                     <>
                         <AiOutlineUp onClick={() => setShowLogout(!showLogout)} />
@@ -32,6 +32,7 @@ export default function Header(){
 
 const LogoutContainer = styled.div`
     position: fixed;
+    z-index: 3;
     width: 150px;
     height: 43px;
     right: 0;
@@ -58,6 +59,7 @@ const HeaderContainer = styled.div`
     justify-content: space-between;
     padding: 0 20px;
     position: fixed;
+    z-index: 3;
     width: 100vw;
     height: 72px;
     top: 0px;
