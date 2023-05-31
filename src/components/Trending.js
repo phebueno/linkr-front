@@ -23,8 +23,8 @@ export default function Trending() {
       <h2>trending</h2>
       <TrendingContent>
         {links &&
-          links.map((link) => (
-            <li onClick={() => navigate(`/hashtag/${link.hashtag}`)}>
+          links.map((link, index) => (
+            <li key={index} onClick={() => navigate(`/hashtag/${link.hashtag}`)}>
               # {link.hashtag}
             </li>
           ))}

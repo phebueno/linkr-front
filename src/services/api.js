@@ -41,13 +41,19 @@ function getTrending(){
     return promise;
 }
 
+function getHashtagPosts(hashtagName){
+    const promise = axios.get(`${BASE_URL}/hashtag/${hashtagName}`)
+    return promise;
+}
+
 const api = {
     getPosts,
     addPost,
     getMetadata,
     likePost,
     dislikePost,
-    getTrending
+    getTrending,
+    getHashtagPosts
 }
 
 export default api;

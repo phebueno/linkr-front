@@ -1,50 +1,35 @@
+import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import styled from "styled-components";
 import HeaderWithSearch from "../../components/HeaderWithSearch.js";
 import Trending from "../../components/Trending.js";
 import UserPost from "../../components/UserPost.js";
+import api from "../../services/api.js";
 
 export default function Hashtags() {
   const { hashtag } = useParams();
-  
-
-  const postsData = [
-    {
-      username: "michael",
-      image:
-        "https://labdicasjornalismo.com/images/noticias/2291/2291_14122019034747.jpg",
-      post: {
-        id: 1,
-        url: "https://www.devmedia.com.br/usando-os-operadores-like-in-e-between-no-oracle/24687",
-        description: "Muito bom!! #like",
-        createdAt: "2023-05-30T00:46:48.713093",
-        likes: 12,
-        liked: false,
-      },
-    },
-    {
-      username: "daenerys",
-      image:
-        "https://labdicasjornalismo.com/images/noticias/2291/2291_14122019034747.jpg",
-      post: {
-        id: 2,
-        url: "https://www.devmedia.com.br/usando-os-operadores-like-in-e-between-no-oracle/24687",
-        description: "Muito bom!! #like",
-        createdAt: "2023-05-30T00:46:48.713093",
-        likes: 15,
-        liked: true,
-      },
-    },
-  ];
+  const [postsData, setPostsData] = useState(undefined);
+    useEffect(()=>{
+        const promise = api.getHashtagPosts(hashtag);
+        promise.then((res) => {
+            setPostsData(res.data);
+          });
+          promise.catch((err) => {
+            console.log(err.message);
+            alert(
+              "Algo deu errado no carregamento do site. Por favor, recarregue a página."
+            );
+          });
+    },[hashtag])  
 
   return (
     <PageContainer>
       <HeaderWithSearch />
       <main>
-        <Title>Posts por #{hashtag}!</Title>
+        <Title># {hashtag}</Title>
         <MainContainer>
           <Container>
-            {postsData.map((postData) => (
+            {postsData && postsData.map((postData) => (
               <UserPost postData={postData} key={postData.post.id} />
             ))}
           </Container>
