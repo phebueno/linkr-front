@@ -36,12 +36,18 @@ function dislikePost(token, postId){
     return promise;
 }
 
+function getTrending(){
+    const promise = axios.get(`${BASE_URL}/trendingtags`)
+    return promise;
+}
+
 const api = {
     getPosts,
     addPost,
     getMetadata,
     likePost,
     dislikePost,
+    getTrending
 }
 
 export default api;

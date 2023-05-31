@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Hashtags from "./pages/hashtags/index.js";
 import Timeline from "./pages/timeline";
 import UserPage from "./pages/user/UserPage";
 
@@ -10,7 +11,7 @@ export default function App() {
         <Route path="/" element={<h1>Login</h1>} />
         <Route path="/timeline" element={<Timeline/>} />
         <Route path="/user/:id" element={<UserPage></UserPage>} />
-        <Route path="/hashtag/:hashtag" element={<h1>Posts por hashtags</h1>} />
+        <Route path="/hashtag/:hashtag" element={<Hashtags/>} />
       </Routes>
     </BrowserRouter>
   )
