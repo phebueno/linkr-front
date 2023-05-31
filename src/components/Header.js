@@ -1,31 +1,31 @@
 import styled from "styled-components"
-import {AiOutlineDown, AiOutlineUp} from "react-icons/ai"
+import { AiOutlineDown, AiOutlineUp } from "react-icons/ai"
 import { useState } from "react"
 
-export default function Header(){
+export default function Header() {
     const [showLogout, setShowLogout] = useState(false);
 
-    function logout(){
+    function logout() {
         //função para deslogar
         alert("Implementar logout");
     }
 
-    return(
+    return (
         <HeaderContainer>
             <Titulo>linkr</Titulo>
             <Profile>
-                {!showLogout ? 
-                    ( <AiOutlineDown onClick={() => setShowLogout(!showLogout)} /> ) : (
-                    <>
-                        <AiOutlineUp onClick={() => setShowLogout(!showLogout)} />
-                        <LogoutContainer>
-                            <h1 onClick={() => logout()}>Logout</h1>
-                        </LogoutContainer>
-                    </>
-                )}
-                <img src="https://i.imgflip.com/3t83o2.jpg?a467976" alt="Daenerys"/>
+                {!showLogout ?
+                    (<AiOutlineDown onClick={() => setShowLogout(!showLogout)} />) : (
+                        <>
+                            <AiOutlineUp onClick={() => setShowLogout(!showLogout)} />
+                            <LogoutContainer>
+                                <h1 onClick={() => logout()}>Logout</h1>
+                            </LogoutContainer>
+                        </>
+                    )}
+                <img src="https://i.imgflip.com/3t83o2.jpg?a467976" alt="Daenerys" />
             </Profile>
-            
+
         </HeaderContainer>
     )
 }
