@@ -1,44 +1,65 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import api from "../../services/api";
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 
 export default function Post({ postData }) {
     const [metadata, setMetadata] = useState({});
+    const [liked, setLiked] = useState(postData.post.liked);
 
     useEffect(() => {
         const promise = api.getMetadata(postData.post.url)
         promise.then(response => {
             const metadata = (response.data);
             setMetadata(metadata);
-            console.log((response.data));
         })
         promise.catch(error => {
             console.error('Erro ao obter os metadados da URL:', error);
         });
-    }, [])
+    }, []);
+
+    const handleLike = async () => {
+        try {
+            if (liked) {
+                await api.dislikePost("token", postData.post.id);
+            } else {
+                await api.likePost("token", postData.post.id);
+            }
+            setLiked(!liked);
+        } catch (error) {
+            console.error("Erro ao curtir ou descurtir o post:", error);
+        }
+    };
 
     return (
         <>
-            <PostContainer>
-                <div>
-                    <img src={postData.image} alt={postData.username} />
-                </div>
-                <Main>
-                    <h1>{postData.username}</h1>
-                    <p>{postData.post.description}</p>
-                    <MetadataUrl>
-                        <div>
-                            <h1>{metadata.title}</h1>
-                            <p>{metadata.description}</p>
-                            <h2>{metadata.url}</h2>
-                        </div>
-                        <div>
-                            <IMAGE src={metadata.images[0]} alt={metadata.title}/>
-                        </div>
-                    </MetadataUrl>
-                </Main>
-
-            </PostContainer>
+            {metadata.title &&
+                <PostContainer>
+                    <div>
+                        <img src={postData.image} alt={postData.username} />
+                        <LikeContainer onClick={handleLike}>
+                            {postData.post.liked ? <LikeIcon /> : <NoLikeIcon />}
+                            <p>{postData.post.likes} likes</p>
+                        </LikeContainer>
+                    </div>
+                    <Main>
+                        <h1>{postData.username}</h1>
+                        <p>{postData.post.description}</p>
+                        <MetadataUrl>
+                            <div>
+                                <h1>{metadata.title}</h1>
+                                <p>{metadata.description}</p>
+                                <h2>{metadata.url}</h2>
+                            </div>
+                            <div>
+                                {metadata.images && metadata.images.length > 0 && (
+                                    <IMAGE src={metadata.images[0]} alt={metadata.title} />
+                                )}
+                            </div>
+                        </MetadataUrl>
+                    </Main>
+                </PostContainer>
+            }
         </>
     )
 }
@@ -81,11 +102,16 @@ const MetadataUrl = styled.div`
         width: 33%;
         padding: 0;
         margin: 0;
-        img{
-
-        }
     }
 `
+
+export const LikeIcon = styled(AiFillHeart)`
+    color: red;
+`;
+
+export const NoLikeIcon = styled(AiOutlineHeart)`
+    color: white;
+`;
 
 const PostContainer = styled.div`
     display: flex;
@@ -118,6 +144,22 @@ const PostContainer = styled.div`
         line-height: 20px;
         color: #B7B7B7;
         margin-bottom: 10px;
+    }
+`
+
+const LikeContainer = styled.div`
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 15px;
+    p{
+        font-size: 11px;
+    }
+    img{
+        width: 53px;
+        height: 53px;
+        border-radius: 53px;
+        object-fit: cover;
     }
 `
 
