@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Header from "../../components/Header";
 import AddPost from "./AddPost";
 import Post from "./Post";
+import HeaderWithSearch from "../../components/HeaderWithSearch";
 
 export default function Timeline() {
 
@@ -37,7 +38,7 @@ export default function Timeline() {
 
     return (
         <>
-            <Header />
+            <HeaderWithSearch/>
             <Container>
                 <AddPost />
                 {postsData.map(postData => (
