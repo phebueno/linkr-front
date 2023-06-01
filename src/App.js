@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Hashtags from "./pages/hashtags/index.js";
 import Timeline from "./pages/timeline";
-import UserPage from "./pages/user/UserPage";
+import UserPage from "./pages/user/index.js";
 
 export default function App() {
   return (
