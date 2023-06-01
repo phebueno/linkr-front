@@ -7,42 +7,47 @@ function createConfig(token) {
 }
 
 //Criar as requisições HTTP para o nosso back
-function getPosts(token){
+function getPosts(token) {
     const config = createConfig(token);
     const promise = axios.get(`${BASE_URL}/posts`, config);
     return promise;
 }
 
-function addPost(token, body){
+function addPost(token, body) {
     const config = createConfig(token);
     const promise = axios.post(`${BASE_URL}/new-post`, body, config);
     return promise;
 }
 
-function getMetadata(url){
+function getMetadata(url) {
     const promise = axios.get(`https://jsonlink.io/api/extract?url=${url}`);
     return promise;
 }
 
-function likePost(token, postId){
+function likePost(token, postId) {
     const config = createConfig(token);
     const promise = axios.post(`${BASE_URL}/like/${postId}`, null, config);
     return promise;
 }
 
-function dislikePost(token, postId){
+function dislikePost(token, postId) {
     const config = createConfig(token);
     const promise = axios.delete(`${BASE_URL}/dislike/${postId}`, config);
     return promise;
 }
 
-function getTrending(){
+function getTrending() {
     const promise = axios.get(`${BASE_URL}/trendingtags`)
     return promise;
 }
 
-function getHashtagPosts(hashtagName){
+function getHashtagPosts(hashtagName) {
     const promise = axios.get(`${BASE_URL}/hashtag/${hashtagName}`)
+    return promise;
+}
+
+function getUserBySearchBar(body) {
+    const promise = axios.post(`${BASE_URL}/search`, body)
     return promise;
 }
 
@@ -53,7 +58,8 @@ const api = {
     likePost,
     dislikePost,
     getTrending,
-    getHashtagPosts
+    getHashtagPosts,
+    getUserBySearchBar
 }
 
 export default api;

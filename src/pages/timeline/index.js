@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Header from "../../components/Header";
 import AddPost from "./AddPost";
 import Post from "./Post";
 import HeaderWithSearch from "../../components/HeaderWithSearch";
