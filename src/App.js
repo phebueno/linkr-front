@@ -4,7 +4,6 @@ import Timeline from "./pages/timeline";
 import UserPage from "./pages/user/index.js";
 import SignIn from "./pages/login/SignIn.js";
 import SignUp from "./pages/login/SignUp.js";
-
 export default function App() {
   return (
     <BrowserRouter>
