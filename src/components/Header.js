@@ -6,8 +6,7 @@ export default function Header() {
     const [showLogout, setShowLogout] = useState(false);
 
     function logout() {
-        //função para deslogar
-        alert("Implementar logout");
+        localStorage.removeItem("token")
     }
 
     return (
