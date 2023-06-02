@@ -1,16 +1,18 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import styled from "styled-components";
 import HeaderWithSearch from "../../components/HeaderWithSearch.js";
 import Trending from "../../components/Trending.js";
 import UserPost from "../../components/UserPost.js";
+import AuthContext from "../../contexts/AuthContext.js";
 import api from "../../services/api.js";
 
 export default function Hashtags() {
   const { hashtag } = useParams();
   const [postsData, setPostsData] = useState(undefined);
+  const { token } = useContext(AuthContext);
   useEffect(() => {
-    const promise = api.getHashtagPosts(hashtag);
+    const promise = api.getHashtagPosts(token, hashtag);
     promise.then((res) => {
       setPostsData(res.data);
     });
@@ -20,7 +22,7 @@ export default function Hashtags() {
         "Algo deu errado no carregamento do site. Por favor, recarregue a página."
       );
     });
-  }, [hashtag]);
+  }, [hashtag, token]);
 
   return (
     <PageContainer>

@@ -1,7 +1,8 @@
 import axios from "axios"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import styled from "styled-components"
+import AuthContext from "../../contexts/AuthContext.js"
 import { Oval } from "react-loader-spinner"
 
 export default function SignIn() {
@@ -10,6 +11,7 @@ export default function SignIn() {
     const [disabled, setDisabled] = useState(false)
     const lsDados = localStorage.getItem("token")
     const navigate = useNavigate()
+    const{setToken} = useContext(AuthContext)
 
     useEffect(() => {
         if (lsDados !== null) {
@@ -26,7 +28,9 @@ export default function SignIn() {
         axios.post("http://localhost:5000/signin", obj)
             .then(res => {
                 localStorage.setItem("token", res.data)
+                setToken(res.data)
                 navigate("/timeline")
+                
             })
             .catch(err => {
                 alert(err.response.data)

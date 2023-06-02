@@ -41,8 +41,9 @@ function getTrending() {
     return promise;
 }
 
-function getHashtagPosts(hashtagName) {
-    const promise = axios.get(`${BASE_URL}/hashtag/${hashtagName}`)
+function getHashtagPosts(token, hashtagName) {
+    const config = createConfig(token);
+    const promise = axios.get(`${BASE_URL}/hashtag/${hashtagName}`, config)
     return promise;
 }
 
