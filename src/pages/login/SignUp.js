@@ -39,7 +39,7 @@ export default function SignUp() {
                     <input type="password" placeholder="password" value={password} onChange={e => setPassword(e.target.value)} />
                     <input placeholder="username" value={username} onChange={e => setUsername(e.target.value)} />
                     <input placeholder="picture" value={picture} onChange={e => setPicture(e.target.value)} />
-                    <button disabled={disabled}>{disabled === false ? "Sign up" : <Oval
+                    <button disabled={disabled}>{disabled === false ? "SignUp" : <Oval
                         height={50}
                         width={50}
                         color="#4fa94d"
