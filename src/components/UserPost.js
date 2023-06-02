@@ -1,12 +1,13 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import api from "../services/api";
-import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";    
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+import { HASHTAG_FORMATTER } from "../utils/hashtagFormatter.js";    
 
 export default function UserPost({ postData }) {
     const [metadata, setMetadata] = useState({});
     const [liked, setLiked] = useState(postData.post.liked);
-
+    
     useEffect(() => {
         const promise = api.getMetadata(postData.post.url)
         promise.then(response => {
@@ -44,7 +45,7 @@ export default function UserPost({ postData }) {
                     </div>
                     <Main>
                         <h1>{postData.username}</h1>
-                        <p>{postData.post.description}</p>
+                        <p>{HASHTAG_FORMATTER(postData.post.description)}</p>
                         <MetadataUrl>
                             <div>
                                 <h1>{metadata.title}</h1>
