@@ -2,11 +2,6 @@ import styled from "styled-components"
 import { AiOutlineDown, AiOutlineUp } from "react-icons/ai"
 import { useState } from "react"
 import { CgSearch } from "react-icons/cg"
-import { useNavigate } from "react-router-dom";
-
-export default function HeaderWithSearch() {
-    const [showLogout, setShowLogout] = useState(false);
-    const navigate = useNavigate()
 import { DebounceInput } from "react-debounce-input"
 import api from "../services/api";
 import { useNavigate } from "react-router-dom"
@@ -191,7 +186,7 @@ const UsersContainer = styled.div`
             font-size: 19px;
             line-height: 23px;
             color: #515151;
-    }
+        }
     }
     img{
         width: 39px;
