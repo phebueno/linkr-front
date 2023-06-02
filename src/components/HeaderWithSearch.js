@@ -41,8 +41,9 @@ export default function HeaderWithSearch() {
     }
 
     function logout() {
-        //função para deslogar
-        alert("Implementar logout");
+        localStorage.removeItem("token")
+        alert("Voce foi deslogado")
+        navigate("/")
     }
 
     return (
@@ -185,7 +186,7 @@ const UsersContainer = styled.div`
             font-size: 19px;
             line-height: 23px;
             color: #515151;
-    }
+        }
     }
     img{
         width: 39px;

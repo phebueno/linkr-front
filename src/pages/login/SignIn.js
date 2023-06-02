@@ -3,23 +3,39 @@ import { useContext, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import AuthContext from "../../contexts/AuthContext.js"
+import { Oval } from "react-loader-spinner"
 
 export default function SignIn() {
     const [email, setEmail] = useState()
     const [password, setPassword] = useState()
+    const [disabled, setDisabled] = useState(false)
+    const lsDados = localStorage.getItem("token")
     const navigate = useNavigate()
     const{setToken} = useContext(AuthContext)
 
+    useEffect(() => {
+        if (lsDados !== null) {
+            navigate("/timeline")
+        } else {
+            navigate("/")
+        }
+    }, [])
+
     function login(e) {
         e.preventDefault()
+        setDisabled("disabled")
         const obj = { email, password }
         axios.post("http://localhost:5000/signin", obj)
-            .then((res) => {
+            .then(res => {
                 localStorage.setItem("token", res.data)
                 setToken(res.data)
                 navigate("/timeline")
+                
             })
-            .catch(err => alert(err.response.data))
+            .catch(err => {
+                alert(err.response.data)
+                setDisabled(false)
+            })
     }
 
     return (
@@ -32,7 +48,19 @@ export default function SignIn() {
                 <Form onSubmit={login}>
                     <input type="email" placeholder="email" value={email} onChange={e => setEmail(e.target.value)} />
                     <input type="password" placeholder="password" value={password} onChange={e => setPassword(e.target.value)} />
-                    <button>Log In</button>
+                    <button disabled={disabled}>{disabled === false ? "Login" : <Oval
+                        height={50}
+                        width={50}
+                        color="#4fa94d"
+                        wrapperStyle={{}}
+                        wrapperClass=""
+                        visible={true}
+                        ariaLabel='oval-loading'
+                        secondaryColor="#4fa94d"
+                        strokeWidth={2}
+                        strokeWidthSecondary={2}
+
+                    />}</button>
                 </Form>
                 <Link to={"/sign-up"}>First time? Create an account!</Link>
             </Login>
@@ -59,7 +87,11 @@ const Form = styled.form`
     button{
         width: 430px;
         height: 65px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         background-color: #1877F2;
+        border-radius: 6px;
         font-family: 'Oswald';
         font-style: normal;
         font-weight: 700;
@@ -69,6 +101,14 @@ const Form = styled.form`
         outline: 0;
         border: 0;
         cursor: pointer;
+    }
+    @media (max-width:950px){
+        justify-content: center;
+        align-items: center;
+        margin-top: 40px;
+        button, input{
+            width: 330px;
+        }
     }
 `
 
@@ -88,6 +128,9 @@ const Login = styled.div`
         color: #FFFFFF;
         margin-top: 10px;
     }
+    @media (max-width: 950px){
+        width: 100%;    
+    }
 `
 
 const Container = styled.div`
@@ -95,6 +138,9 @@ const Container = styled.div`
     height: 100%;
     position: absolute;
     display: flex;
+    @media (max-width: 950px){
+        flex-direction: column;
+    }
 `
 
 const Banner = styled.div`
@@ -120,5 +166,19 @@ const Banner = styled.div`
         font-size: 43px;
         line-height: 64px;
         color: #FFFFFF;
+    }
+    @media (max-width:950px){
+        width: 100%;
+        height: 180px;
+        align-items: center;
+        padding-left: 0;
+        h1{
+            font-size: 76px;
+            line-height: 84px;
+        }
+        h2{
+            font-size: 23px;
+            line-height: 34px;
+        }
     }
 `
