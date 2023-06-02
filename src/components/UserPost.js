@@ -6,7 +6,7 @@ import { HASHTAG_FORMATTER } from "../utils/hashtagFormatter.js";
 import { FaPencilAlt } from "react-icons/fa"
 import DeletePostModal from "./DeletePostModal.js";
 
-export default function UserPost({ postData }) {
+export default function UserPost({ postData, updatePostData }) {
     const [metadata, setMetadata] = useState({});
     const [liked, setLiked] = useState(postData.post.liked);
     
@@ -46,7 +46,14 @@ export default function UserPost({ postData }) {
                         </LikeContainer>
                     </div>
                     <Main>
-                    <PostHeader><h1>{postData.username}</h1><span><FaPencilAlt/> <DeletePostModal postId={postData.post.id}/></span></PostHeader>                        <p>{HASHTAG_FORMATTER(postData.post.description)}</p>
+                    <PostHeader>
+                        <h1>{postData.username}</h1>
+                        <span>
+                            <FaPencilAlt/>
+                            <DeletePostModal postId={postData.post.id} updatePostData={updatePostData}/>
+                        </span>
+                    </PostHeader>                        
+                    <p>{HASHTAG_FORMATTER(postData.post.description)}</p>
                         <MetadataUrl>
                             <div>
                                 <h1>{metadata.title}</h1>

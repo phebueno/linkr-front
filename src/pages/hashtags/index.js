@@ -11,18 +11,25 @@ export default function Hashtags() {
   const { hashtag } = useParams();
   const [postsData, setPostsData] = useState(undefined);
   const { token } = useContext(AuthContext);
+
+  function getPostData() {
+    api
+      .getHashtagPosts(token, hashtag)
+      .then((res) => {
+        setPostsData(res.data);
+      })
+      .catch((err) => {
+        console.log(err.message);
+        alert(
+          "Algo deu errado no carregamento do site. Por favor, recarregue a página."
+        );
+      });
+  }
+
   useEffect(() => {
-    const promise = api.getHashtagPosts(token, hashtag);
-    promise.then((res) => {
-      setPostsData(res.data);
-    });
-    promise.catch((err) => {
-      console.log(err.message);
-      alert(
-        "Algo deu errado no carregamento do site. Por favor, recarregue a página."
-      );
-    });
-  }, [hashtag, token]);
+    getPostData();
+    // eslint-disable-next-line
+  }, [hashtag]);
 
   return (
     <PageContainer>
@@ -33,7 +40,11 @@ export default function Hashtags() {
           <Container>
             {postsData &&
               postsData.map((postData) => (
-                <UserPost postData={postData} key={postData.post.id} />
+                <UserPost
+                  postData={postData}
+                  key={postData.post.id}
+                  updatePostData={getPostData}
+                />
               ))}
           </Container>
           <Trending />
