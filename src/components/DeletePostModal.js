@@ -3,14 +3,24 @@ import styled from "styled-components";
 import Modal from "react-modal";
 import { TbTrashFilled } from "react-icons/tb";
 import AuthContext from "../contexts/AuthContext.js";
+import api from "../services/api.js";
 
 Modal.setAppElement("#root");
 
-export default function DeletePostModal({postId}) {
+export default function DeletePostModal({ postId, updatePostData }) {
   const [isOpen, setIsOpen] = useState(false);
-  const {token} = useContext(AuthContext);
-  function deletePost(postId){
-    alert(`Deletando post de id ${postId}...`)
+  const { token } = useContext(AuthContext);
+
+  function deletePost(postId) {
+    api
+      .deletePostById(token, postId)
+      .then((res) => {
+        console.log(res.data);
+        updatePostData();
+      })
+      .catch((err) => {
+        alert(err.response.data);
+      });
     setIsOpen(false);
   }
 
@@ -20,7 +30,7 @@ export default function DeletePostModal({postId}) {
 
   return (
     <>
-      <TrashBtn onClick={toggleModal}/>
+      <TrashBtn onClick={toggleModal} />
       <Modal
         isOpen={isOpen}
         onRequestClose={toggleModal}
@@ -36,7 +46,9 @@ export default function DeletePostModal({postId}) {
         <p>Are you sure you want to delete this post?</p>
         <div>
           <CancelBtn onClick={toggleModal}>No, go back</CancelBtn>
-          <ConfirmBtn onClick={()=>deletePost(postId)}>Yes, delete it</ConfirmBtn>
+          <ConfirmBtn onClick={() => deletePost(postId)}>
+            Yes, delete it
+          </ConfirmBtn>
         </div>
       </Modal>
     </>
@@ -57,7 +69,8 @@ const OverlayStyle = styled.div`
 `;
 
 const TrashBtn = styled(TbTrashFilled)`
-cursor: pointer;`
+  cursor: pointer;
+`;
 
 const CancelBtn = styled.button`
   background: #ffffff;
@@ -79,7 +92,7 @@ const ModalStyle = styled.div`
   justify-content: center;
   gap: 40px;
   border-radius: 50px;
-  :focus{
+  :focus {
     outline: none;
   }
   p {

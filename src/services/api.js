@@ -57,6 +57,12 @@ function getPostsByUserId(userId){
     return promise
 }
 
+function deletePostById(token, postId){
+    const config = createConfig(token);
+    const promise = axios.delete(`${BASE_URL}/delete/${postId}`, config)
+    return promise
+}
+
 const api = {
     getPosts,
     addPost,
@@ -66,7 +72,8 @@ const api = {
     getTrending,
     getHashtagPosts,
     getUserBySearchBar,
-    getPostsByUserId
+    getPostsByUserId,
+    deletePostById
 }
 
 export default api;
