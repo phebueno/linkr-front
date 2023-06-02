@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import Modal from "react-modal";
 import { TbTrashFilled } from "react-icons/tb";
+import AuthContext from "../contexts/AuthContext.js";
 
 Modal.setAppElement("#root");
 
 export default function DeletePostModal({postId}) {
   const [isOpen, setIsOpen] = useState(false);
-
+  const {token} = useContext(AuthContext);
   function deletePost(postId){
     alert(`Deletando post de id ${postId}...`)
     setIsOpen(false);

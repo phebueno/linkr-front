@@ -1,18 +1,24 @@
 import axios from "axios"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import styled from "styled-components"
+import AuthContext from "../../contexts/AuthContext.js"
 
 export default function SignIn() {
     const [email, setEmail] = useState()
     const [password, setPassword] = useState()
     const navigate = useNavigate()
+    const{setToken} = useContext(AuthContext)
 
     function login(e) {
         e.preventDefault()
         const obj = { email, password }
         axios.post("http://localhost:5000/signin", obj)
-            .then(() => navigate("/timeline"))
+            .then((res) => {
+                localStorage.setItem("token", res.data)
+                setToken(res.data)
+                navigate("/timeline")
+            })
             .catch(err => alert(err.response.data))
     }
 
