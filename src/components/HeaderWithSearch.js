@@ -7,6 +7,43 @@ import { useNavigate } from "react-router-dom";
 export default function HeaderWithSearch() {
     const [showLogout, setShowLogout] = useState(false);
     const navigate = useNavigate()
+import { DebounceInput } from "react-debounce-input"
+import api from "../services/api";
+import { useNavigate } from "react-router-dom"
+
+export default function HeaderWithSearch() {
+    const [showLogout, setShowLogout] = useState(false);
+    const [name, setName] = useState("")
+    const [users, setUsers] = useState([])
+    const navigate = useNavigate()
+
+    function searchUsers(e) {
+        if (e.target.value.length < 3) {
+            setUsers([])
+            return
+        }
+        e.preventDefault();
+
+        setName(e.target.value)
+
+        const body = {
+            name: name
+        }
+
+        const promise = api.getUserBySearchBar(body)
+
+        promise.then((res) => {
+            setUsers(res.data)
+        })
+        promise.catch((err) => {
+            console.log(err.message)
+        })
+
+    }
+
+    function openUserPerfil(id) {
+        navigate(`/user/${id}`)
+    }
 
     function logout() {
         localStorage.removeItem("token")
@@ -17,7 +54,10 @@ export default function HeaderWithSearch() {
     return (
         <HeaderContainer>
             <Titulo>linkr</Titulo>
-            <SearchBar><input placeholder="Search for people"></input><CgSearch></CgSearch></SearchBar>
+            <SearchBar><DebounceInput minLength={3} debounceTimeout={300} onChange={(e) => (searchUsers(e))} placeholder="Search for people"></DebounceInput>
+                <CgSearch></CgSearch>
+                <UsersContainer>{users.map((user, index) => <div onClick={() => openUserPerfil(user.id)} key={index}><img src={user.image} alt="userImage"></img><p>{user.username}</p></div>)}</UsersContainer>
+            </SearchBar>
             <Profile>
                 {!showLogout ?
                     (<AiOutlineDown onClick={() => setShowLogout(!showLogout)} />) : (
@@ -101,10 +141,11 @@ const SearchBar = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-evenly;
+    flex-wrap: wrap;
     width: 563px;
     height: auto;
     background-color: #FFFFFF;
-    border-radius: 8px;
+    border-radius: 8px 8px 0 0;
     svg{
         cursor: pointer;
         color: #C6C6C6;
@@ -127,4 +168,35 @@ const SearchBar = styled.div`
         box-shadow: 0 0 0 0;
         outline: 0;
     }   
+`
+
+const UsersContainer = styled.div`
+    z-index: 0;
+    display: flex;
+    flex-direction: column;
+    width: 563px;
+    position: fixed;
+    text-align: center;
+    top: 58px;
+    height: auto;
+    background-color: #E7E7E7;
+    border-radius: 0 0 8px 8px;
+    div{
+        display: flex;
+        align-items: center;
+        p{
+            font-family: 'Lato';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 19px;
+            line-height: 23px;
+            color: #515151;
+    }
+    }
+    img{
+        width: 39px;
+        height: 39px;
+        border-radius: 39px;
+        margin: 14px 12px 16px 17px;
+    }
 `
