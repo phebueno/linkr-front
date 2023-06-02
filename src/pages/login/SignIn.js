@@ -25,7 +25,8 @@ export default function SignIn() {
         e.preventDefault()
         setDisabled("disabled")
         const obj = { email, password }
-        axios.post("http://localhost:5000/signin", obj)
+        const BASE_URL = process.env.REACT_APP_API_URL;
+        axios.post(`${BASE_URL}/signin`, obj)
             .then(res => {
                 localStorage.setItem("token", res.data.token)
                 setToken(res.data)
