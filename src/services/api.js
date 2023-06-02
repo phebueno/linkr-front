@@ -51,6 +51,11 @@ function getUserBySearchBar(body) {
     return promise;
 }
 
+function getPostsByUserId(userId){
+    const promise = axios.get(`${BASE_URL}/user/${userId}`)
+    return promise
+}
+
 const api = {
     getPosts,
     addPost,
@@ -59,7 +64,8 @@ const api = {
     dislikePost,
     getTrending,
     getHashtagPosts,
-    getUserBySearchBar
+    getUserBySearchBar,
+    getPostsByUserId
 }
 
 export default api;
