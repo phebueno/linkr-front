@@ -2,7 +2,9 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import api from "../services/api";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
-import { HASHTAG_FORMATTER } from "../utils/hashtagFormatter.js";    
+import { HASHTAG_FORMATTER } from "../utils/hashtagFormatter.js";
+import { FaPencilAlt } from "react-icons/fa"
+import DeletePostModal from "./DeletePostModal.js";
 
 export default function UserPost({ postData }) {
     const [metadata, setMetadata] = useState({});
@@ -44,8 +46,7 @@ export default function UserPost({ postData }) {
                         </LikeContainer>
                     </div>
                     <Main>
-                        <h1>{postData.username}</h1>
-                        <p>{HASHTAG_FORMATTER(postData.post.description)}</p>
+                    <PostHeader><h1>{postData.username}</h1><span><FaPencilAlt/> <DeletePostModal postId={postData.post.id}/></span></PostHeader>                        <p>{HASHTAG_FORMATTER(postData.post.description)}</p>
                         <MetadataUrl>
                             <div>
                                 <h1>{metadata.title}</h1>
@@ -169,3 +170,14 @@ const LikeContainer = styled.div`
 const Main = styled.div`
     width: 90%;
 `
+
+const PostHeader = styled.div`
+    width:100%;
+    display:flex;
+    justify-content: space-between;
+    span{
+        display:flex;
+        gap: 10px;
+        font-size: 20px;
+    }
+`;
