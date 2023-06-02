@@ -9,8 +9,13 @@ import { useState } from "react";
 
 export default function App() {
   const [token, setToken] = useState(localStorage.getItem("token"));
+  const [userAuthData, setUserAuthData] = useState(
+    JSON.parse(localStorage.getItem("userData"))
+  );
   return (
-    <AuthContext.Provider value={{ token, setToken }}>
+    <AuthContext.Provider
+      value={{ token, setToken, userAuthData, setUserAuthData }}
+    >
       <BrowserRouter>
         <Routes>
           <Route path="/sign-up" element={<SignUp />} />

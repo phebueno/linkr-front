@@ -16,7 +16,8 @@ export default function SignUp() {
         e.preventDefault()
         setDisabled("disabled")
         const obj = { email, password, username, picture }
-        axios.post("http://localhost:5000/signup", obj)
+        const BASE_URL = process.env.REACT_APP_API_URL;
+        axios.post(`${BASE_URL}/signup`, obj)
             .then(() => {
                 alert("Conta registrada com sucesso")
                 navigate("/")
