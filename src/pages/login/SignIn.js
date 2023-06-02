@@ -11,7 +11,7 @@ export default function SignIn() {
     const [disabled, setDisabled] = useState(false)
     const lsDados = localStorage.getItem("token")
     const navigate = useNavigate()
-    const{setToken} = useContext(AuthContext)
+    const { setToken, setUserAuthData } = useContext(AuthContext)
 
     useEffect(() => {
         if (lsDados !== null) {
@@ -29,7 +29,9 @@ export default function SignIn() {
         axios.post(`${BASE_URL}/signin`, obj)
             .then(res => {
                 localStorage.setItem("token", res.data.token)
-                setToken(res.data)
+                localStorage.setItem("userData", JSON.stringify(res.data.userData))
+                setToken(res.data.token)                
+                setUserAuthData(res.data.userData)
                 navigate("/timeline")
                 
             })
