@@ -1,14 +1,16 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import api from "../services/api";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { HASHTAG_FORMATTER } from "../utils/hashtagFormatter.js";
 import { FaPencilAlt } from "react-icons/fa"
 import DeletePostModal from "./DeletePostModal.js";
+import AuthContext from "../contexts/AuthContext.js";
 
 export default function UserPost({ postData, updatePostData }) {
     const [metadata, setMetadata] = useState({});
     const [liked, setLiked] = useState(postData.post.liked);
+    const { userAuthData } = useContext(AuthContext);
     
     useEffect(() => {
         const promise = api.getMetadata(postData.post.url)
@@ -48,10 +50,13 @@ export default function UserPost({ postData, updatePostData }) {
                     <Main>
                     <PostHeader>
                         <h1>{postData.username}</h1>
+                        {userAuthData.username===postData.username ? 
                         <span>
                             <FaPencilAlt/>
                             <DeletePostModal postId={postData.post.id} updatePostData={updatePostData}/>
-                        </span>
+                        </span> 
+                        : ""}
+                        
                     </PostHeader>                        
                     <p>{HASHTAG_FORMATTER(postData.post.description)}</p>
                         <MetadataUrl>

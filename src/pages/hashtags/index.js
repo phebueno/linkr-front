@@ -11,7 +11,6 @@ export default function Hashtags() {
   const { hashtag } = useParams();
   const [postsData, setPostsData] = useState(undefined);
   const { token } = useContext(AuthContext);
-
   function getPostData() {
     api
       .getHashtagPosts(token, hashtag)
