@@ -27,7 +27,6 @@ export default function SignIn() {
         const obj = { email, password }
         axios.post("http://localhost:5000/signin", obj)
             .then(res => {
-                console.log(res);
                 localStorage.setItem("token", res.data.token)
                 setToken(res.data.token)
                 navigate('/timeline')
