@@ -2,13 +2,16 @@ import styled from "styled-components"
 import { AiOutlineDown, AiOutlineUp } from "react-icons/ai"
 import { useState } from "react"
 import { CgSearch } from "react-icons/cg"
+import { useNavigate } from "react-router-dom";
 
 export default function HeaderWithSearch() {
     const [showLogout, setShowLogout] = useState(false);
+    const navigate = useNavigate()
 
     function logout() {
-        //função para deslogar
-        alert("Implementar logout");
+        localStorage.removeItem("token")
+        alert("Voce foi deslogado")
+        navigate("/")
     }
 
     return (
