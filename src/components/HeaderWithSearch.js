@@ -40,6 +40,8 @@ export default function HeaderWithSearch() {
 
     function openUserPerfil(id) {
         navigate(`/user/${id}`)
+        window.location.reload(true)
+        setName("")
     }
 
     function logout() {
