@@ -13,12 +13,13 @@ export default function HeaderWithSearch() {
     const [users, setUsers] = useState([])
     const navigate = useNavigate()
     const { setToken, setUserAuthData } = useContext(AuthContext);
+    const { userAuthData } = useContext(AuthContext)
     const wrapperRef = useRef(null);
     useOutsideAlerter(wrapperRef);
 
     function searchUsers(event) {
 
-        if(event.target.value.length === 0){
+        if (event.target.value.length === 0) {
             return setUsers([])
         }
 
@@ -56,22 +57,22 @@ export default function HeaderWithSearch() {
 
     function useOutsideAlerter(ref) {
         useEffect(() => {
-          /**
-           * Alert if clicked on outside of element
-           */
-          function handleClickOutside(event) {
-            if (ref.current && !ref.current.contains(event.target)) {
-                setShowLogout(false);
+            /**
+             * Alert if clicked on outside of element
+             */
+            function handleClickOutside(event) {
+                if (ref.current && !ref.current.contains(event.target)) {
+                    setShowLogout(false);
+                }
             }
-          }
-          // Bind the event listener
-          document.addEventListener("mousedown", handleClickOutside);
-          return () => {
-            // Unbind the event listener on clean up
-            document.removeEventListener("mousedown", handleClickOutside);
-          };
+            // Bind the event listener
+            document.addEventListener("mousedown", handleClickOutside);
+            return () => {
+                // Unbind the event listener on clean up
+                document.removeEventListener("mousedown", handleClickOutside);
+            };
         }, [ref]);
-      }
+    }
 
     return (
         <HeaderContainer>
@@ -92,7 +93,7 @@ export default function HeaderWithSearch() {
                             </LogoutContainer>
                         </>
                     )}
-                <img onClick={() => setShowLogout(!showLogout)} src="https://i.imgflip.com/3t83o2.jpg?a467976" alt="Daenerys" />
+                <img onClick={() => setShowLogout(!showLogout)} src={userAuthData.img} alt="Daenerys" />
             </Profile>
 
         </HeaderContainer>
@@ -158,6 +159,7 @@ const Profile = styled.div`
         height: 53px;
         border-radius: 53px;
         margin-left: 15px;
+        object-fit: cover;
     }
 
 `
