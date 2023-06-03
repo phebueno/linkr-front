@@ -6,12 +6,14 @@ import { HASHTAG_FORMATTER } from "../utils/hashtagFormatter.js";
 import { FaPencilAlt } from "react-icons/fa"
 import DeletePostModal from "./DeletePostModal.js";
 import AuthContext from "../contexts/AuthContext.js";
+import { useNavigate } from "react-router-dom";
 
 export default function UserPost({ postData, updatePostData }) {
     const [metadata, setMetadata] = useState({});
     const [liked, setLiked] = useState(postData.post.liked);
     const { userAuthData } = useContext(AuthContext);
-    
+    const navigate = useNavigate()
+
     useEffect(() => {
         const promise = api.getMetadata(postData.post.url)
         promise.then(response => {
@@ -36,6 +38,10 @@ export default function UserPost({ postData, updatePostData }) {
         }
     };
 
+    function userPage(id) {
+        navigate(`/user/${id}`)
+    }
+
     return (
         <>
             {metadata.title &&
@@ -48,17 +54,17 @@ export default function UserPost({ postData, updatePostData }) {
                         </LikeContainer>
                     </div>
                     <Main>
-                    <PostHeader>
-                        <h1>{postData.username}</h1>
-                        {userAuthData.username===postData.username ? 
-                        <span>
-                            <FaPencilAlt/>
-                            <DeletePostModal postId={postData.post.id} updatePostData={updatePostData}/>
-                        </span> 
-                        : ""}
-                        
-                    </PostHeader>                        
-                    <p>{HASHTAG_FORMATTER(postData.post.description)}</p>
+                        <PostHeader>
+                            <h1 onClick={() => userPage(postData.id)}>{postData.username}</h1>
+                            {userAuthData.username === postData.username ?
+                                <span>
+                                    <FaPencilAlt />
+                                    <DeletePostModal postId={postData.post.id} updatePostData={updatePostData} />
+                                </span>
+                                : ""}
+
+                        </PostHeader>
+                        <p>{HASHTAG_FORMATTER(postData.post.description)}</p>
                         <MetadataUrl>
                             <div>
                                 <h1>{metadata.title}</h1>
@@ -154,6 +160,7 @@ const PostContainer = styled.div`
     }
     h1{
         margin-bottom: 10px;
+        cursor: pointer;
     }
     p{
         font-size: 17px;
