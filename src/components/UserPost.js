@@ -96,7 +96,7 @@ export default function UserPost({ postData, updatePostData }) {
                         </PostHeader>
                         <p>{HASHTAG_FORMATTER(postData.post.description)}</p>
                         <MetadataUrl>
-                            <div>
+                            <div onClick={()=>(window.open(`${metadata.url}`))}>
                                 <h1>{metadata.title}</h1>
                                 <p>{metadata.description}</p>
                                 <h2>{metadata.url}</h2>
