@@ -9,6 +9,7 @@ import AuthContext from "../contexts/AuthContext.js";
 import { useNavigate } from "react-router-dom";
 
 export default function UserPost({ postData, updatePostData }) {
+    console.log(postData);
     const [metadata, setMetadata] = useState({});
     const [liked, setLiked] = useState(postData.post.liked);
     const { token, userAuthData } = useContext(AuthContext);
@@ -31,6 +32,7 @@ export default function UserPost({ postData, updatePostData }) {
                 await api.dislikePost(token, postData.post.id)
                     .then(res => {
                         console.log(res);
+                        console.log(updatePostData);
                         updatePostData();
                     }).catch(error => {
                         console.log(error);
@@ -39,6 +41,7 @@ export default function UserPost({ postData, updatePostData }) {
                 await api.likePost(token, postData.post.id)
                     .then(res => {
                         console.log(res);
+                        console.log(updatePostData);
                         updatePostData();
                     }).catch(error => {
                         console.log(error);
