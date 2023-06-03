@@ -45,7 +45,7 @@ export default function Hashtags() {
                   updatePostData={getPostData}
                 />
               ))}
-              <Tooltip id="my-tooltip" /> 
+              <TooltipStyle id="my-tooltip" /> 
           </Container>
           <Trending />
         </MainContainer>
@@ -53,6 +53,15 @@ export default function Hashtags() {
     </PageContainer>
   );
 }
+
+const TooltipStyle = styled(Tooltip)`
+  font-family: 'Lato';
+  background-color:#FFFFFF;
+  color: #505050;
+  font-weight: 700;
+  font-size: 11px;
+  line-height: 13px;
+`;
 
 const MainContainer = styled.div`
   display: flex;

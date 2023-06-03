@@ -7,7 +7,6 @@ import { FaPencilAlt } from "react-icons/fa"
 import DeletePostModal from "./DeletePostModal.js";
 import AuthContext from "../contexts/AuthContext.js";
 import { useNavigate } from "react-router-dom";
-import { Tooltip } from "react-tooltip";
 
 export default function UserPost({ postData, updatePostData }) {
     const [metadata, setMetadata] = useState({});
@@ -33,8 +32,7 @@ export default function UserPost({ postData, updatePostData }) {
                     .then(res => {
                         console.log(res);
                         updatePostData();
-                    }).
-                    catch(error => {
+                    }).catch(error => {
                         console.log(error);
                     });
             } else {
@@ -42,8 +40,7 @@ export default function UserPost({ postData, updatePostData }) {
                     .then(res => {
                         console.log(res);
                         updatePostData();
-                    }).
-                    catch(error => {
+                    }).catch(error => {
                         console.log(error);
                     });
             }
@@ -56,14 +53,20 @@ export default function UserPost({ postData, updatePostData }) {
     function userPage(id) {
         navigate(`/user/${id}`)
     }
-
+    
     function getTooltipUsers(liked, likes, user){
-        let likeText = '' 
-        let likeVerb = 'curtiu';
+        const diffUser = `${"Fulano"}`; //ADICIONAR AQUI O NOME DO USUÁRIO ADICIONAL
+        let likeText = '' ;
         if(!likes) return likeText;
-        if(liked) likeText+='Você '
-        if(likes>1) likeVerb = `e outras ${likes-1} pessoas curtiram`;
-        return `${likeText} ${likeVerb} esse post`;
+        if(liked) likeText+='Você';
+        if(liked && likes===1) return likeText;
+        if(!liked && likes>0) likeText=diffUser;
+        if(liked && likes>1) likeText+=`, ${diffUser}`;
+        const remainingLikes = liked ? likes-2 : likes-1;
+        if(remainingLikes) {
+            likeText += remainingLikes===1 ?  ` e outra 1 pessoa` : ` e outras ${remainingLikes} pessoas`;
+        }
+        return likeText; 
     }
 
     return (
@@ -75,6 +78,7 @@ export default function UserPost({ postData, updatePostData }) {
                         <LikeContainer 
                             data-tooltip-id="my-tooltip" 
                             data-tooltip-content={getTooltipUsers(postData.post.liked, postData.post.likes, userAuthData.username)} 
+                            data-tooltip-place="bottom"
                             onClick={handleLike}
                         >
                             {postData.post.liked ? <LikeIcon /> : <NoLikeIcon />}
