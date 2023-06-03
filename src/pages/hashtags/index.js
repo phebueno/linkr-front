@@ -34,7 +34,7 @@ export default function Hashtags() {
     <PageContainer>
       <HeaderWithSearch />
       <main>
-        <Title># {hashtag}</Title>
+        <Title data-test="hashtag-title"># {hashtag}</Title>
         <MainContainer>
           <Container>
             {postsData &&

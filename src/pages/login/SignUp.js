@@ -36,11 +36,11 @@ export default function SignUp() {
             </Banner>
             <Login>
                 <Form onSubmit={register}>
-                    <input type="email" placeholder="email" value={email} onChange={e => setEmail(e.target.value)} />
-                    <input type="password" placeholder="password" value={password} onChange={e => setPassword(e.target.value)} />
-                    <input placeholder="username" value={username} onChange={e => setUsername(e.target.value)} />
-                    <input placeholder="picture" value={picture} onChange={e => setPicture(e.target.value)} />
-                    <button disabled={disabled}>{disabled === false ? "SignUp" : <Oval
+                    <input data-test="email" type="email" placeholder="email" value={email} onChange={e => setEmail(e.target.value)} />
+                    <input data-test="password" type="password" placeholder="password" value={password} onChange={e => setPassword(e.target.value)} />
+                    <input data-test="username" placeholder="username" value={username} onChange={e => setUsername(e.target.value)} />
+                    <input data-test="picture-url" placeholder="picture" value={picture} onChange={e => setPicture(e.target.value)} />
+                    <button data-test="sign-up-btn" disabled={disabled}>{disabled === false ? "SignUp" : <Oval
                         height={50}
                         width={50}
                         color="#4fa94d"
@@ -54,7 +54,7 @@ export default function SignUp() {
 
                     />}</button>
                 </Form>
-                <Link to={"/"}>Switch back to log in</Link>
+                <Link data-test="login-link" to={"/"}>Switch back to log in</Link>
             </Login>
         </Container>
     )
