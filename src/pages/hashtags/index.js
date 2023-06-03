@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import styled from "styled-components";
 import HeaderWithSearch from "../../components/HeaderWithSearch.js";
+import TooltipLikes from "../../components/TooltipLikes.js";
 import Trending from "../../components/Trending.js";
 import UserPost from "../../components/UserPost.js";
 import AuthContext from "../../contexts/AuthContext.js";
@@ -44,6 +45,7 @@ export default function Hashtags() {
                   updatePostData={getPostData}
                 />
               ))}
+              <TooltipLikes /> 
           </Container>
           <Trending />
         </MainContainer>

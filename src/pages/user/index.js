@@ -8,6 +8,7 @@ import api from "../../services/api";
 import Trending from "../../components/Trending";
 import { useContext } from "react";
 import AuthContext from "../../contexts/AuthContext";
+import TooltipLikes from "../../components/TooltipLikes.js";
 
 export default function UserPage() {
 
@@ -17,18 +18,21 @@ export default function UserPage() {
     const [postsData, setPostsData] = useState([])
     const [userData, setUserData] = useState({})
 
-    useEffect(() => {
-        const promise = api.getPostsByUserId(token,id)
-
-        promise.then((res) => {
+    function getUserAndPostsData(){
+      api
+        .getPostsByUserId(token,id)
+        .then((res) => {
             setPostsData(res.data.posts)
             setUserData(res.data.user)
         })
-
-        promise.catch((err) => {
+        .catch((err) => {
             alert(err.message)
         })
+    }
 
+    useEffect(() => {
+        getUserAndPostsData();
+        // eslint-disable-next-line
     }, [])
 
     return (
@@ -40,8 +44,9 @@ export default function UserPage() {
                     <Container>
                         {postsData &&
                             postsData.map((postData) => (
-                                <UserPost postData={postData} key={postData.post.id} />
+                                <UserPost postData={postData} key={postData.post.id} updatePostData={getUserAndPostsData}/>
                             ))}
+                    <TooltipLikes />
                     </Container>
                     <Trending />
                 </MainContainer>
