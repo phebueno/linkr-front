@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 export default function UserPost({ postData, updatePostData }) {
     const [metadata, setMetadata] = useState({});
     const [liked, setLiked] = useState(postData.post.liked);
-    const { userAuthData } = useContext(AuthContext);
+    const { token, userAuthData } = useContext(AuthContext);
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -28,9 +28,23 @@ export default function UserPost({ postData, updatePostData }) {
     const handleLike = async () => {
         try {
             if (liked) {
-                await api.dislikePost("token", postData.post.id);
+                await api.dislikePost(token, postData.post.id)
+                    .then(res => {
+                        console.log(res);
+                        updatePostData();
+                    }).
+                    catch(error => {
+                        console.log(error);
+                    });
             } else {
-                await api.likePost("token", postData.post.id);
+                await api.likePost(token, postData.post.id)
+                    .then(res => {
+                        console.log(res);
+                        updatePostData();
+                    }).
+                    catch(error => {
+                        console.log(error);
+                    });
             }
             setLiked(!liked);
         } catch (error) {
@@ -171,6 +185,7 @@ const PostContainer = styled.div`
 `
 
 const LikeContainer = styled.div`
+    cursor: pointer;
     display: flex;
     align-items: center;
     flex-direction: column;
