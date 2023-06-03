@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import { AiOutlineDown, AiOutlineUp } from "react-icons/ai"
-import { useContext, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import { CgSearch } from "react-icons/cg"
 import { DebounceInput } from "react-debounce-input"
 import api from "../services/api";
@@ -13,6 +13,8 @@ export default function HeaderWithSearch() {
     const [users, setUsers] = useState([])
     const navigate = useNavigate()
     const { setToken, setUserAuthData } = useContext(AuthContext);
+    const wrapperRef = useRef(null);
+    useOutsideAlerter(wrapperRef);
 
     function searchUsers(event) {
 
@@ -52,6 +54,25 @@ export default function HeaderWithSearch() {
         navigate("/")
     }
 
+    function useOutsideAlerter(ref) {
+        useEffect(() => {
+          /**
+           * Alert if clicked on outside of element
+           */
+          function handleClickOutside(event) {
+            if (ref.current && !ref.current.contains(event.target)) {
+                setShowLogout(false);
+            }
+          }
+          // Bind the event listener
+          document.addEventListener("mousedown", handleClickOutside);
+          return () => {
+            // Unbind the event listener on clean up
+            document.removeEventListener("mousedown", handleClickOutside);
+          };
+        }, [ref]);
+      }
+
     return (
         <HeaderContainer>
             <Titulo>linkr</Titulo>
@@ -61,7 +82,7 @@ export default function HeaderWithSearch() {
                 <CgSearch></CgSearch>
                 <UsersContainer>{users.map((user, index) => <div onClick={() => openUserPerfil(user.id)} key={index}><img src={user.image} alt="userImage"></img><p>{user.username}</p></div>)}</UsersContainer>
             </SearchBar>
-            <Profile>
+            <Profile ref={wrapperRef}>
                 {!showLogout ?
                     (<AiOutlineDown onClick={() => setShowLogout(!showLogout)} />) : (
                         <>
@@ -71,7 +92,7 @@ export default function HeaderWithSearch() {
                             </LogoutContainer>
                         </>
                     )}
-                <img src="https://i.imgflip.com/3t83o2.jpg?a467976" alt="Daenerys" />
+                <img onClick={() => setShowLogout(!showLogout)} src="https://i.imgflip.com/3t83o2.jpg?a467976" alt="Daenerys" />
             </Profile>
 
         </HeaderContainer>
@@ -132,6 +153,7 @@ const Profile = styled.div`
         cursor: pointer;
     }
     img{
+        cursor:pointer;
         width: 53px;
         height: 53px;
         border-radius: 53px;
