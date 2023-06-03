@@ -23,7 +23,6 @@ export default function UserPage() {
         promise.then((res) => {
             setPostsData(res.data.posts)
             setUserData(res.data.user)
-            console.log(res.data.posts)
         })
 
         promise.catch((err) => {
