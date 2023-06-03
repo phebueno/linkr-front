@@ -3,6 +3,7 @@ import { useParams } from "react-router";
 import { Tooltip } from "react-tooltip";
 import styled from "styled-components";
 import HeaderWithSearch from "../../components/HeaderWithSearch.js";
+import TooltipLikes from "../../components/TooltipLikes.js";
 import Trending from "../../components/Trending.js";
 import UserPost from "../../components/UserPost.js";
 import AuthContext from "../../contexts/AuthContext.js";
@@ -45,7 +46,7 @@ export default function Hashtags() {
                   updatePostData={getPostData}
                 />
               ))}
-              <TooltipStyle id="my-tooltip" /> 
+              <TooltipLikes /> 
           </Container>
           <Trending />
         </MainContainer>
@@ -53,15 +54,6 @@ export default function Hashtags() {
     </PageContainer>
   );
 }
-
-const TooltipStyle = styled(Tooltip)`
-  font-family: 'Lato';
-  background-color:#FFFFFF;
-  color: #505050;
-  font-weight: 700;
-  font-size: 11px;
-  line-height: 13px;
-`;
 
 const MainContainer = styled.div`
   display: flex;
