@@ -6,16 +6,19 @@ import { useState } from "react";
 import { useEffect } from "react";
 import api from "../../services/api";
 import Trending from "../../components/Trending";
+import { useContext } from "react";
+import AuthContext from "../../contexts/AuthContext";
 
 export default function UserPage() {
 
     const { id } = useParams()
+    const { token } = useContext(AuthContext);
 
     const [postsData, setPostsData] = useState([])
     const [userData, setUserData] = useState({})
 
     useEffect(() => {
-        const promise = api.getPostsByUserId(id)
+        const promise = api.getPostsByUserId(token,id)
 
         promise.then((res) => {
             setPostsData(res.data.posts)

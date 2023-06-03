@@ -52,12 +52,13 @@ function getUserBySearchBar(body) {
     return promise;
 }
 
-function getPostsByUserId(userId){
-    const promise = axios.get(`${BASE_URL}/user/${userId}`)
+function getPostsByUserId(token, userId) {
+    const config = createConfig(token);
+    const promise = axios.get(`${BASE_URL}/user/${userId}`, config)
     return promise
 }
 
-function deletePostById(token, postId){
+function deletePostById(token, postId) {
     const config = createConfig(token);
     const promise = axios.delete(`${BASE_URL}/delete/${postId}`, config)
     return promise

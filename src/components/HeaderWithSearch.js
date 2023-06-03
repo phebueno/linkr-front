@@ -12,27 +12,27 @@ export default function HeaderWithSearch() {
     const [users, setUsers] = useState([])
     const navigate = useNavigate()
 
-    function searchUsers(e) {
-        if (e.target.value.length < 3) {
-            setUsers([])
-            return
-        }
-        e.preventDefault();
+    function searchUsers(event) {
 
-        setName(e.target.value)
+        if(event.target.value.length === 0){
+            return setUsers([])
+        }
+
+        setName(event.target.value)
+
+        const value = event.target.value
 
         const body = {
-            name: name
+            name: value
         }
 
-        const promise = api.getUserBySearchBar(body)
-
-        promise.then((res) => {
-            setUsers(res.data)
-        })
-        promise.catch((err) => {
-            console.log(err.message)
-        })
+        api.getUserBySearchBar(body)
+            .then((res) => {
+                setUsers(res.data)
+            })
+            .catch((err) => {
+                console.log(err.message)
+            })
 
     }
 
@@ -49,7 +49,9 @@ export default function HeaderWithSearch() {
     return (
         <HeaderContainer>
             <Titulo>linkr</Titulo>
-            <SearchBar><DebounceInput minLength={3} debounceTimeout={300} onChange={(e) => (searchUsers(e))} placeholder="Search for people"></DebounceInput>
+            <SearchBar><DebounceInput minLength={3} debounceTimeout={300} onChange={(e) => {
+                searchUsers(e)
+            }} value={name} placeholder="Search for people"></DebounceInput>
                 <CgSearch></CgSearch>
                 <UsersContainer>{users.map((user, index) => <div onClick={() => openUserPerfil(user.id)} key={index}><img src={user.image} alt="userImage"></img><p>{user.username}</p></div>)}</UsersContainer>
             </SearchBar>
