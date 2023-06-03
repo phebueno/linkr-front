@@ -21,7 +21,7 @@ export default function Timeline() {
                 setPostsData(res.data)
             })
             .catch((err) => {
-                alert(err.message)
+                alert("An error occured while trying to fetch the posts, please refresh the page")
             })
     }
 
@@ -29,9 +29,6 @@ export default function Timeline() {
         getUserAndPostsData();
         // eslint-disable-next-line
     }, [])
-
-    //teste
-    //Fazer a requisição e armazenar em postsData
 
     return (
         <PageContainer>
@@ -41,10 +38,10 @@ export default function Timeline() {
                 <MainContainer>
                     <Container>
                         <AddPost></AddPost>
-                        {postsData &&
+                        {postsData.length === 0 ? <Message>There are no posts yet</Message> : (postsData &&
                             postsData.map((postData) => (
                                 <UserPost postData={postData} key={postData.post.id} updatePostData={getUserAndPostsData} />
-                            ))}
+                            )))}
                         <TooltipLikes />
                     </Container>
                     <Trending />
@@ -63,7 +60,7 @@ const Container = styled.div`
   width: 50vw;
   max-width: 611px;
   margin: 0px auto;
-`;
+`
 
 const PageContainer = styled.div`
   display: flex;
@@ -88,3 +85,10 @@ const Title = styled.div`
     object-fit: cover;
   }
 `;
+
+const Message = styled.div`
+  font-family: "Oswald", sans-serif;
+  font-weight: 700;
+  font-size: 43px;
+  color: #ffffff;
+`

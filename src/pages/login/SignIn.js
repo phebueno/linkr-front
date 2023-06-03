@@ -35,7 +35,7 @@ export default function SignIn() {
                 navigate('/timeline')                
             })
             .catch(err => {
-                alert(err.response.data)
+                alert("Email ou senha incorretos")
                 setDisabled(false)
             })
     }
