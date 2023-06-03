@@ -35,7 +35,7 @@ export default function SignIn() {
                 navigate('/timeline')                
             })
             .catch(err => {
-                alert(err.response.data)
+                alert("Email ou senha incorretos")
                 setDisabled(false)
             })
     }
@@ -48,9 +48,9 @@ export default function SignIn() {
             </Banner>
             <Login>
                 <Form onSubmit={login}>
-                    <input type="email" placeholder="email" value={email} onChange={e => setEmail(e.target.value)} />
-                    <input type="password" placeholder="password" value={password} onChange={e => setPassword(e.target.value)} />
-                    <button disabled={disabled}>{disabled === false ? "Login" : <Oval
+                    <input data-test="email" type="email" placeholder="email" value={email} onChange={e => setEmail(e.target.value)} />
+                    <input data-test="password" type="password" placeholder="password" value={password} onChange={e => setPassword(e.target.value)} />
+                    <button data-test="login-btn" disabled={disabled}>{disabled === false ? "Login" : <Oval
                         height={50}
                         width={50}
                         color="#4fa94d"
@@ -64,7 +64,7 @@ export default function SignIn() {
 
                     />}</button>
                 </Form>
-                <Link to={"/sign-up"}>First time? Create an account!</Link>
+                <Link data-test="sign-up-link" to={"/sign-up"}>First time? Create an account!</Link>
             </Login>
         </Container>
     )

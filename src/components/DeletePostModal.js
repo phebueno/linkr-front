@@ -36,7 +36,7 @@ export default function DeletePostModal({ postId, updatePostData }) {
 
   return (
     <>
-      <TrashBtn onClick={toggleModal} />
+      <TrashBtn data-test="delete-btn" onClick={toggleModal} />
       <Modal
         isOpen={isOpen}
         onRequestClose={toggleModal}
@@ -51,7 +51,7 @@ export default function DeletePostModal({ postId, updatePostData }) {
       >
         <p>Are you sure you want to delete this post?</p>
         <div>
-          <CancelBtn disabled={disabled} onClick={toggleModal}>
+          <CancelBtn data-test="cancel" disabled={disabled} onClick={toggleModal}>
             {disabled ? (
               <ThreeDots
                 height="50"
@@ -67,7 +67,7 @@ export default function DeletePostModal({ postId, updatePostData }) {
               "No, go back"
             )}
           </CancelBtn>
-          <ConfirmBtn disabled={disabled} onClick={() => deletePost(postId)}>
+          <ConfirmBtn data-test="confirm" disabled={disabled} onClick={() => deletePost(postId)}>
             {disabled ? (
               <ThreeDots
                 height="50"

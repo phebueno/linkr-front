@@ -77,23 +77,23 @@ export default function HeaderWithSearch() {
     return (
         <HeaderContainer>
             <Titulo>linkr</Titulo>
-            <SearchBar><DebounceInput minLength={3} debounceTimeout={300} onChange={(e) => {
+            <SearchBar><DebounceInput data-test="search" minLength={3} debounceTimeout={300} onChange={(e) => {
                 searchUsers(e)
             }} value={name} placeholder="Search for people"></DebounceInput>
                 <CgSearch></CgSearch>
-                <UsersContainer>{users.map((user, index) => <div onClick={() => openUserPerfil(user.id)} key={index}><img src={user.image} alt="userImage"></img><p>{user.username}</p></div>)}</UsersContainer>
+                <UsersContainer>{users.map((user, index) => <div data-test="user-search" onClick={() => openUserPerfil(user.id)} key={index}><img src={user.image} alt="userImage"></img><p>{user.username}</p></div>)}</UsersContainer>
             </SearchBar>
             <Profile ref={wrapperRef}>
                 {!showLogout ?
                     (<AiOutlineDown onClick={() => setShowLogout(!showLogout)} />) : (
                         <>
                             <AiOutlineUp onClick={() => setShowLogout(!showLogout)} />
-                            <LogoutContainer>
-                                <h1 onClick={() => logout()}>Logout</h1>
+                            <LogoutContainer data-test="menu" >
+                                <h1 data-test="logout" onClick={() => logout()}>Logout</h1>
                             </LogoutContainer>
                         </>
                     )}
-                <img onClick={() => setShowLogout(!showLogout)} src={userAuthData.img} alt="Daenerys" />
+                <img data-test="avatar" onClick={() => setShowLogout(!showLogout)} src={userAuthData.img} alt="Daenerys" />
             </Profile>
 
         </HeaderContainer>

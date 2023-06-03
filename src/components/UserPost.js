@@ -70,17 +70,17 @@ export default function UserPost({ postData, updatePostData }) {
     return (
         <>
             {metadata.title &&
-                <PostContainer>
+                <PostContainer data-test="post">
                     <div>
                         <img src={postData.image} alt={postData.username} />
-                        <LikeContainer 
+                        <LikeContainer data-test="tooltip"
                             data-tooltip-id="my-tooltip" 
                             data-tooltip-content={getTooltipUsers(postData.post.liked, postData.post.likes, userAuthData.username)} 
                             data-tooltip-place="bottom"
                             onClick={handleLike}
                         >
-                            {postData.post.liked ? <LikeIcon /> : <NoLikeIcon />}
-                            <p>{postData.post.likes} likes</p>
+                            {postData.post.liked ? <LikeIcon data-test="like-btn" /> : <NoLikeIcon data-test="like-btn"/>}
+                            <p data-test="counter">{postData.post.likes} likes</p>
                         </LikeContainer>
                     </div>
                     <Main>
