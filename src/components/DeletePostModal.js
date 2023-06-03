@@ -109,11 +109,13 @@ const TrashBtn = styled(TbTrashFilled)`
 const CancelBtn = styled.button`
   background: #ffffff;
   color: #1877f2;
+  opacity: ${(props)=> props.disabled? "0.6": "1"};
 `;
 
 const ConfirmBtn = styled.button`
   background: #1877f2;
   color: #ffffff;
+  opacity: ${(props)=> props.disabled? "0.6": "1"};
 `;
 
 const ModalStyle = styled.div`
