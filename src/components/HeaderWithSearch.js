@@ -1,16 +1,18 @@
 import styled from "styled-components"
 import { AiOutlineDown, AiOutlineUp } from "react-icons/ai"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { CgSearch } from "react-icons/cg"
 import { DebounceInput } from "react-debounce-input"
 import api from "../services/api";
 import { useNavigate } from "react-router-dom"
+import AuthContext from "../contexts/AuthContext.js"
 
 export default function HeaderWithSearch() {
     const [showLogout, setShowLogout] = useState(false);
     const [name, setName] = useState("")
     const [users, setUsers] = useState([])
     const navigate = useNavigate()
+    const { setToken, setUserAuthData } = useContext(AuthContext);
 
     function searchUsers(event) {
 
@@ -41,7 +43,9 @@ export default function HeaderWithSearch() {
     }
 
     function logout() {
-        localStorage.removeItem("token")
+        localStorage.clear()
+        setToken(undefined)
+        setUserAuthData(undefined)
         alert("Voce foi deslogado")
         navigate("/")
     }

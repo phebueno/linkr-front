@@ -5,12 +5,14 @@ import HeaderWithSearch from "../../components/HeaderWithSearch.js";
 import Trending from "../../components/Trending.js";
 import UserPost from "../../components/UserPost.js";
 import AuthContext from "../../contexts/AuthContext.js";
+import useKickOut from "../../hooks/useKickOut.js";
 import api from "../../services/api.js";
 
 export default function Hashtags() {
   const { hashtag } = useParams();
   const [postsData, setPostsData] = useState(undefined);
   const { token } = useContext(AuthContext);
+  useKickOut();
   function getPostData() {
     api
       .getHashtagPosts(token, hashtag)
@@ -19,9 +21,6 @@ export default function Hashtags() {
       })
       .catch((err) => {
         console.log(err.message);
-        alert(
-          "Algo deu errado no carregamento do site. Por favor, recarregue a página."
-        );
       });
   }
 
