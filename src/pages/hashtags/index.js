@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
+import { Tooltip } from "react-tooltip";
 import styled from "styled-components";
 import HeaderWithSearch from "../../components/HeaderWithSearch.js";
 import Trending from "../../components/Trending.js";
@@ -44,6 +45,7 @@ export default function Hashtags() {
                   updatePostData={getPostData}
                 />
               ))}
+              <Tooltip id="my-tooltip" /> 
           </Container>
           <Trending />
         </MainContainer>

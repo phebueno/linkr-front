@@ -7,6 +7,7 @@ import { FaPencilAlt } from "react-icons/fa"
 import DeletePostModal from "./DeletePostModal.js";
 import AuthContext from "../contexts/AuthContext.js";
 import { useNavigate } from "react-router-dom";
+import { Tooltip } from "react-tooltip";
 
 export default function UserPost({ postData, updatePostData }) {
     const [metadata, setMetadata] = useState({});
@@ -56,13 +57,26 @@ export default function UserPost({ postData, updatePostData }) {
         navigate(`/user/${id}`)
     }
 
+    function getTooltipUsers(liked, likes, user){
+        let likeText = '' 
+        let likeVerb = 'curtiu';
+        if(!likes) return likeText;
+        if(liked) likeText+='Você '
+        if(likes>1) likeVerb = `e outras ${likes-1} pessoas curtiram`;
+        return `${likeText} ${likeVerb} esse post`;
+    }
+
     return (
         <>
             {metadata.title &&
                 <PostContainer>
                     <div>
                         <img src={postData.image} alt={postData.username} />
-                        <LikeContainer onClick={handleLike}>
+                        <LikeContainer 
+                            data-tooltip-id="my-tooltip" 
+                            data-tooltip-content={getTooltipUsers(postData.post.liked, postData.post.likes, userAuthData.username)} 
+                            onClick={handleLike}
+                        >
                             {postData.post.liked ? <LikeIcon /> : <NoLikeIcon />}
                             <p>{postData.post.likes} likes</p>
                         </LikeContainer>
