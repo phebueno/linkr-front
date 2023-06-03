@@ -4,24 +4,30 @@ import Modal from "react-modal";
 import { TbTrashFilled } from "react-icons/tb";
 import AuthContext from "../contexts/AuthContext.js";
 import api from "../services/api.js";
+import { ThreeDots } from "react-loader-spinner";
 
 Modal.setAppElement("#root");
 
 export default function DeletePostModal({ postId, updatePostData }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [disabled, setDisabled] = useState(false);
   const { token } = useContext(AuthContext);
 
   function deletePost(postId) {
+    setDisabled(true);
     api
       .deletePostById(token, postId)
       .then((res) => {
         console.log(res.data);
         updatePostData();
+        setDisabled(false);
+        setIsOpen(false);
       })
       .catch((err) => {
+        setDisabled(false);
+        setIsOpen(false);
         alert(err.response.data);
-      });
-    setIsOpen(false);
+      });    
   }
 
   function toggleModal() {
@@ -45,9 +51,37 @@ export default function DeletePostModal({ postId, updatePostData }) {
       >
         <p>Are you sure you want to delete this post?</p>
         <div>
-          <CancelBtn onClick={toggleModal}>No, go back</CancelBtn>
-          <ConfirmBtn onClick={() => deletePost(postId)}>
-            Yes, delete it
+          <CancelBtn disabled={disabled} onClick={toggleModal}>
+            {disabled ? (
+              <ThreeDots
+                height="50"
+                width="50"
+                radius="9"
+                color="#1877f2"
+                ariaLabel="three-dots-loading"
+                wrapperStyle={{}}
+                wrapperClassName=""
+                visible={true}
+              />
+            ) : (
+              "No, go back"
+            )}
+          </CancelBtn>
+          <ConfirmBtn disabled={disabled} onClick={() => deletePost(postId)}>
+            {disabled ? (
+              <ThreeDots
+                height="50"
+                width="50"
+                radius="9"
+                color="#FFFFFF"
+                ariaLabel="three-dots-loading"
+                wrapperStyle={{}}
+                wrapperClassName=""
+                visible={true}
+              />
+            ) : (
+              "Yes, delete it"
+            )}
           </ConfirmBtn>
         </div>
       </Modal>
@@ -75,11 +109,13 @@ const TrashBtn = styled(TbTrashFilled)`
 const CancelBtn = styled.button`
   background: #ffffff;
   color: #1877f2;
+  opacity: ${(props)=> props.disabled? "0.6": "1"};
 `;
 
 const ConfirmBtn = styled.button`
   background: #1877f2;
   color: #ffffff;
+  opacity: ${(props)=> props.disabled? "0.6": "1"};
 `;
 
 const ModalStyle = styled.div`
