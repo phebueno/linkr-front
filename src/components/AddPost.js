@@ -23,6 +23,7 @@ export default function AddPost() {
 
         const promise = api.addPost(token, { ...form });
         promise.then((res) => {
+            window.location.reload(true)
             setIsLoading(false);
         });
         promise.catch(() => {
