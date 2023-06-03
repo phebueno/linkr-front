@@ -1,12 +1,17 @@
 import { useState } from "react"
-import api from "../../services/api";
+import api from "../services/api";
 import styled from "styled-components";
+import { useEffect, useContext } from "react";
+import AuthContext from "../contexts/AuthContext";
 
 export default function AddPost() {
     const [form, setForm] = useState({ "url": "", "description": "" });
     const [isLoading, setIsLoading] = useState(false);
+    const { token, userAuthData } = useContext(AuthContext);
 
-    //Falta o token
+    useEffect(() => {
+        console.log(userAuthData)
+    }, [])
 
     function handleChange(e) {
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -16,11 +21,9 @@ export default function AddPost() {
         e.preventDefault();
         setIsLoading(true);
 
-        const promise = api.addPost("token", { ...form });
+        const promise = api.addPost(token, { ...form });
         promise.then((res) => {
-            //Habilitar botões, limpar form, atualizar timeline
             setIsLoading(false);
-
         });
         promise.catch(() => {
             setIsLoading(false);
@@ -29,11 +32,10 @@ export default function AddPost() {
     }
 
     return (
-        <>  
+        <>
             <FormContainer>
-                <span>timeline</span>
                 <div>
-                    <img src="https://i.imgflip.com/3t83o2.jpg?a467976" alt="Daenerys"/>
+                    <img src={userAuthData.img} alt="userImage" />
                 </div>
                 <Form onSubmit={handleSubmit}>
                     <h1>What are you doing to share today?</h1>
