@@ -1,17 +1,13 @@
 import { useState } from "react"
 import api from "../services/api";
 import styled from "styled-components";
-import { useEffect, useContext } from "react";
+import { useContext } from "react";
 import AuthContext from "../contexts/AuthContext";
 
 export default function AddPost() {
     const [form, setForm] = useState({ "url": "", "description": "" });
     const [isLoading, setIsLoading] = useState(false);
     const { token, userAuthData } = useContext(AuthContext);
-
-    useEffect(() => {
-        console.log(userAuthData)
-    }, [])
 
     function handleChange(e) {
         setForm({ ...form, [e.target.name]: e.target.value });
