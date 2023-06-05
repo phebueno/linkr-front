@@ -4,8 +4,9 @@ const GlobalStyle = createGlobalStyle`
     *{
         box-sizing: border-box;
     }
-    html{
+    html, body{
         background: #333333;
+        width: 100%;
     }
 `;
 
