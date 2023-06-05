@@ -51,7 +51,6 @@ export default function HeaderWithSearch() {
         localStorage.clear()
         setToken(undefined)
         setUserAuthData(undefined)
-        alert("Voce foi deslogado")
         navigate("/")
     }
 
