@@ -201,7 +201,18 @@ const SearchBar = styled.div`
         outline: 0;
     }   
     @media (max-width: 950px){
-        display: none;
+        width: 90%;
+        height: 55px;
+        position: absolute;
+        top: 80px;
+        left: 5%;
+        svg{
+            position: absolute;
+            right: 0;
+        }
+        input{
+            border-radius: 5px;
+        }
     }
 `
 
