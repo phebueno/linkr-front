@@ -40,7 +40,7 @@ export default function Timeline() {
                     <Container>
                         <AddPost></AddPost>
                         {!postsData && <LoadingSkeleton />}
-                        {postsData.length === 0 ? <Message>There are no posts yet</Message> : (postsData &&
+                        {postsData && postsData.length === 0 ? <Message>There are no posts yet</Message> : (postsData &&
                             postsData.map((postData) => (
                                 <UserPost postData={postData} key={postData.post.id} updatePostData={getUserAndPostsData} />
                             )))}
