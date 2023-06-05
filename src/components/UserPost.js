@@ -98,7 +98,7 @@ export default function UserPost({ postData, updatePostData }) {
                             <h1 onClick={() => userPage(postData.id)}>{postData.username}</h1>
                             {userAuthData.username === postData.username ?
                                 <span>
-                                    <FaPencilAlt onClick={()=>setEditMode(!editMode)}/>
+                                    <FaPencilAlt data-test="edit-btn" onClick={()=>setEditMode(!editMode)}/>
                                     <DeletePostModal postId={postData.post.id} updatePostData={updatePostData} />
                                 </span>
                                 : ""}
@@ -138,7 +138,6 @@ const IMAGE = styled.img`
 `
 
 const MetadataUrl = styled.div`
-    height: 155px;
     width: 100%;
     border: 1px solid #4D4D4D;
     border-radius: 11px;

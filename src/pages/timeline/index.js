@@ -7,12 +7,13 @@ import { useState, useContext, useEffect } from "react";
 import AuthContext from "../../contexts/AuthContext";
 import Trending from "../../components/Trending";
 import api from "../../services/api";
+import LoadingSkeleton from "../../components/LoadingSkeleton.js";
 
 export default function Timeline() {
 
     const { token } = useContext(AuthContext);
 
-    const [postsData, setPostsData] = useState([])
+    const [postsData, setPostsData] = useState(undefined)
 
     function getUserAndPostsData() {
         api
@@ -38,7 +39,8 @@ export default function Timeline() {
                 <MainContainer>
                     <Container>
                         <AddPost></AddPost>
-                        {postsData.length === 0 ? <Message>There are no posts yet</Message> : (postsData &&
+                        {!postsData && <LoadingSkeleton />}
+                        {postsData && postsData.length === 0 ? <Message>There are no posts yet</Message> : (postsData &&
                             postsData.map((postData) => (
                                 <UserPost postData={postData} key={postData.post.id} updatePostData={getUserAndPostsData} />
                             )))}
