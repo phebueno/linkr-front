@@ -11,25 +11,26 @@ import LoadingSkeleton from "../../components/LoadingSkeleton.js";
 
 export default function Timeline() {
 
-    const { token } = useContext(AuthContext);
+  const { token } = useContext(AuthContext);
 
-    const [postsData, setPostsData] = useState(undefined)
+  const [postsData, setPostsData] = useState([])
 
-    function getUserAndPostsData() {
-        api
-            .getPosts(token)
-            .then((res) => {
-                setPostsData(res.data)
-            })
-            .catch((err) => {
-                alert("An error occured while trying to fetch the posts, please refresh the page")
-            })
-    }
 
-    useEffect(() => {
-        getUserAndPostsData();
-        // eslint-disable-next-line
-    }, [])
+  function getUserAndPostsData() {
+    api
+      .getPosts(token)
+      .then((res) => {
+        setPostsData(res.data)
+      })
+      .catch((err) => {
+        alert("An error occured while trying to fetch the posts, please refresh the page")
+      })
+  }
+
+  useEffect(() => {
+    getUserAndPostsData();
+    // eslint-disable-next-line
+  }, [])
 
     return (
         <PageContainer>
@@ -56,7 +57,7 @@ const MainContainer = styled.div`
   display: flex;
   align-items: flex-start;
   gap: 25px;
-  @media (min-width:612px ,max-width: 950px) {
+  @media (max-width: 950px) {
     width: 100%;  
   }  
 `;
@@ -66,7 +67,7 @@ const Container = styled.div`
   max-width: 611px;
   margin: 0px auto;
   @media (max-width: 950px) {
-    width: 100%;  
+    width: 100%;
   }
 `
 

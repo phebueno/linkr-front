@@ -51,7 +51,6 @@ export default function HeaderWithSearch() {
         localStorage.clear()
         setToken(undefined)
         setUserAuthData(undefined)
-        alert("Voce foi deslogado")
         navigate("/")
     }
 
@@ -136,6 +135,11 @@ const HeaderContainer = styled.div`
     background: #151515;
     color: #FFFFFF;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    @media (max-width: 950px){  
+        width: 100vw;
+        left: 0;
+        top: 0;
+    }
 `
 
 const Titulo = styled.h1`
@@ -207,6 +211,20 @@ const SearchBar = styled.div`
     @media (max-width: 950px){
         display: none;
     }   
+    @media (max-width: 950px){
+        width: 90%;
+        height: 55px;
+        position: absolute;
+        top: 80px;
+        left: 5%;
+        svg{
+            position: absolute;
+            right: 0;
+        }
+        input{
+            border-radius: 5px;
+        }
+    }
 `
 
 const UsersContainer = styled.div`
