@@ -13,7 +13,7 @@ export default function Timeline() {
 
   const { token } = useContext(AuthContext);
 
-  const [postsData, setPostsData] = useState([])
+  const [postsData, setPostsData] = useState(undefined)
 
 
   function getUserAndPostsData() {
