@@ -13,7 +13,6 @@ export default function UserPost({ postData, updatePostData }) {
     const [liked, setLiked] = useState(postData.post.liked);
     const { token, userAuthData } = useContext(AuthContext);
     const navigate = useNavigate()
-
     useEffect(() => {
         const promise = api.getMetadata(postData.post.url)
         promise.then(response => {
@@ -52,12 +51,11 @@ export default function UserPost({ postData, updatePostData }) {
         navigate(`/user/${id}`)
     }
     
-    function getTooltipUsers(liked, likes, user){
-        const diffUser = `${"Fulano"}`; //ADICIONAR AQUI O NOME DO USUÁRIO ADICIONAL
+    function getTooltipUsers(liked, likes, diffUser){
         let likeText = '' ;
         if(!likes) return likeText;
         if(liked) likeText+='Você';
-        if(liked && likes===1) return likeText;
+        if(!diffUser) return likeText;
         if(!liked && likes>0) likeText=diffUser;
         if(liked && likes>1) likeText+=`, ${diffUser}`;
         const remainingLikes = liked ? likes-2 : likes-1;
@@ -75,7 +73,7 @@ export default function UserPost({ postData, updatePostData }) {
                         <img src={postData.image} alt={postData.username} />
                         <LikeContainer data-test="tooltip"
                             data-tooltip-id="my-tooltip" 
-                            data-tooltip-content={getTooltipUsers(postData.post.liked, postData.post.likes, userAuthData.username)} 
+                            data-tooltip-content={getTooltipUsers(postData.post.liked, postData.post.likes, postData.post.diffUser)} 
                             data-tooltip-place="bottom"
                             onClick={handleLike}
                         >

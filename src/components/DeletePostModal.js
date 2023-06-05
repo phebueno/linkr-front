@@ -18,7 +18,6 @@ export default function DeletePostModal({ postId, updatePostData }) {
     api
       .deletePostById(token, postId)
       .then((res) => {
-        console.log(res.data);
         updatePostData();
         setDisabled(false);
         setIsOpen(false);
