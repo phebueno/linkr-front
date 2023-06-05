@@ -138,7 +138,6 @@ const IMAGE = styled.img`
 `
 
 const MetadataUrl = styled.div`
-    height: 155px;
     width: 100%;
     border: 1px solid #4D4D4D;
     border-radius: 11px;
