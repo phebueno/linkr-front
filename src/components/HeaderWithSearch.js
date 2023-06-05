@@ -148,6 +148,9 @@ const Titulo = styled.h1`
     font-weight: 700;
     font-size: 49px;
     line-height: 54px;
+    @media (max-width:611px){
+        font-size:45px;
+    }
 `
 
 const Profile = styled.div`
@@ -164,6 +167,12 @@ const Profile = styled.div`
         border-radius: 53px;
         margin-left: 15px;
         object-fit: cover;
+    }
+    @media (max-width:611px){
+        img{
+            width: 40px;
+            height: 40px;
+        }
     }
 
 `
@@ -198,6 +207,9 @@ const SearchBar = styled.div`
     input:focus {
         box-shadow: 0 0 0 0;
         outline: 0;
+    }
+    @media (max-width: 950px){
+        display: none;
     }   
     @media (max-width: 950px){
         width: 90%;

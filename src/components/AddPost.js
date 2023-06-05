@@ -87,9 +87,12 @@ const FormContainer = styled.div`
         font-size: 43px;
         color: #FFFFFF;
     }
-    @media (max-width:950px){
-        width: 100%;
+    @media (max-width:611px){
+    border-radius:0;
+    img{
+        display:none;
     }
+  }
 `
 
 const Form = styled.form`
@@ -109,6 +112,15 @@ const Form = styled.form`
         height: 66px;
         margin-bottom: 30px;
     }
+    @media (max-width:611px){
+    h1{
+        text-align:center;
+        font-size:17px;
+    }
+    input:last-of-type{
+        height: 47px;
+    }
+  }
 `
 
 const Input = styled.input`

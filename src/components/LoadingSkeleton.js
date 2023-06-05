@@ -35,17 +35,7 @@ export default function LoadingSkeleton() {
               }}
             />
           </Main>
-        </PostContainer>
-        <p>
-          <Skeleton
-            circle={true}
-            style={{
-              width: "53px",
-              height: "53px",
-            }}
-          />
-          <Skeleton count={3} />
-        </p>
+        </PostContainer>        
       </SkeletonTheme>
     </>
   );
@@ -83,6 +73,21 @@ const PostContainer = styled.div`
     line-height: 20px;
     color: #b7b7b7;
     margin-bottom: 10px;
+  }
+  @media (max-width:611px){
+    border-radius:0;
+    h1{
+        font-size: 17px;
+    }
+    p{
+        font-size: 15px;
+    }
+    div:first-child{
+        img{
+            width: 40px;
+            height: 40px;
+        }
+    }
   }
 `;
 

@@ -56,14 +56,17 @@ export default function Timeline() {
 const MainContainer = styled.div`
   display: flex;
   align-items: flex-start;
-  max-width: 100%;
+  gap: 25px;
+  @media (max-width: 950px) {
+    width: 100%;  
+  }  
 `;
 
 const Container = styled.div`
-  width: 50%;
+  width: 50vw;
   max-width: 611px;
   margin: 0px auto;
-  @media (max-width:950px){
+  @media (max-width: 950px) {
     width: 100%;
   }
 `
@@ -72,8 +75,8 @@ const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  @media (max-width: 950px){
-    main{
+  @media (max-width: 950px) {
+    main {
       width: 100%;
     }
   }
@@ -95,6 +98,13 @@ const Title = styled.div`
     border-radius: 53px;
     object-fit: cover;
   }
+  @media (max-width: 950px){
+    padding-left:17px;
+  }
+  @media (max-width: 611px){
+    margin-top: 90px;
+    font-size:33px;
+  }  
 `;
 
 const Message = styled.div`

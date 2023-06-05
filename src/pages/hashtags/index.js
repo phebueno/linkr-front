@@ -45,7 +45,7 @@ export default function Hashtags() {
                   updatePostData={getPostData}
                 />
               ))}
-              <TooltipLikes /> 
+            <TooltipLikes />
           </Container>
           <Trending />
         </MainContainer>
@@ -58,18 +58,29 @@ const MainContainer = styled.div`
   display: flex;
   align-items: flex-start;
   gap: 25px;
+  @media (max-width: 950px) {
+    width: 100%;  
+  }
 `;
 
 const Container = styled.div`
   width: 50vw;
   max-width: 611px;
   margin: 0px auto;
+  @media (max-width: 950px) {
+    width: 100%;  
+  }
 `;
 
 const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  @media (max-width: 950px) {
+    main {
+      width: 100%;
+    }
+  }
 `;
 
 const Title = styled.div`
@@ -80,4 +91,12 @@ const Title = styled.div`
   font-weight: 700;
   font-size: 43px;
   color: #ffffff;
+  @media (max-width: 950px){
+    padding-left:17px;
+  }
+  @media (max-width: 611px){
+    margin-top: 90px;
+    font-size:33px;
+    margin-top: 7
+  }  
 `;
