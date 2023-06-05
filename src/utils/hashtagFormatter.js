@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 export const HASHTAG_FORMATTER = string => {
-    return string.split(/((?:^|\s)(?:#[a-z\d-]+))/gi).filter(Boolean).map((v,i)=>{
+    return string.split(/((?:^|\s)(?:#[a-záàâãéèêíïóôõöúçñ\d-]+))/gi).filter(Boolean).map((v,i)=>{
       if(v.includes('#')){
         return <StyledHashtag key={i} to={`/hashtag/${v.trim().replace("#",'')}`}>{v}</StyledHashtag>
       }   else{
