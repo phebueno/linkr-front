@@ -7,10 +7,12 @@ import { FaPencilAlt } from "react-icons/fa"
 import DeletePostModal from "./DeletePostModal.js";
 import AuthContext from "../contexts/AuthContext.js";
 import { useNavigate } from "react-router-dom";
+import EditPost from "./EditPost.js";
 
 export default function UserPost({ postData, updatePostData }) {
     const [metadata, setMetadata] = useState({});
     const [liked, setLiked] = useState(postData.post.liked);
+    const [editMode, setEditMode] = useState(false);
     const { token, userAuthData } = useContext(AuthContext);
     const navigate = useNavigate()
     useEffect(() => {
@@ -86,13 +88,17 @@ export default function UserPost({ postData, updatePostData }) {
                             <h1 onClick={() => userPage(postData.id)}>{postData.username}</h1>
                             {userAuthData.username === postData.username ?
                                 <span>
-                                    <FaPencilAlt />
+                                    <FaPencilAlt onClick={()=>setEditMode(!editMode)}/>
                                     <DeletePostModal postId={postData.post.id} updatePostData={updatePostData} />
                                 </span>
                                 : ""}
 
                         </PostHeader>
-                        <p>{HASHTAG_FORMATTER(postData.post.description)}</p>
+                        {!editMode ? 
+                            <p>{HASHTAG_FORMATTER(postData.post.description)}</p>
+                            : 
+                            <EditPost postData={postData} updatePostData={updatePostData} setEditMode={setEditMode}/>
+                        }                        
                         <MetadataUrl>
                             <div onClick={()=>(window.open(`${metadata.url}`))}>
                                 <h1>{metadata.title}</h1>

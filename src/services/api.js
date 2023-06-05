@@ -64,6 +64,12 @@ function deletePostById(token, postId) {
     return promise
 }
 
+function editPostById(token, body, postId) {
+    const config = createConfig(token);
+    const promise = axios.patch(`${BASE_URL}/update/${postId}`, body, config)
+    return promise
+}
+
 const api = {
     getPosts,
     addPost,
@@ -74,7 +80,8 @@ const api = {
     getHashtagPosts,
     getUserBySearchBar,
     getPostsByUserId,
-    deletePostById
+    deletePostById,
+    editPostById
 }
 
 export default api;
