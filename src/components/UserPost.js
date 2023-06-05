@@ -10,7 +10,11 @@ import { useNavigate } from "react-router-dom";
 import EditPost from "./EditPost.js";
 
 export default function UserPost({ postData, updatePostData }) {
-    const [metadata, setMetadata] = useState({});
+    const [metadata, setMetadata] = useState({
+        title:postData.post.url,
+        description:postData.post.url,
+        url:postData.post.url
+    });
     const [liked, setLiked] = useState(postData.post.liked);
     const [editMode, setEditMode] = useState(false);
     const { token, userAuthData } = useContext(AuthContext);
@@ -18,6 +22,12 @@ export default function UserPost({ postData, updatePostData }) {
     useEffect(() => {
         const promise = api.getMetadata(postData.post.url)
         promise.then(response => {
+            if(
+                !response.data.title ||
+                !response.data.description ||
+                !response.data.images
+            )
+                   return;
             const metadata = (response.data);
             setMetadata(metadata);
         })
