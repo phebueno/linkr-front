@@ -10,62 +10,70 @@ import api from "../../services/api";
 
 export default function Timeline() {
 
-    const { token } = useContext(AuthContext);
+  const { token } = useContext(AuthContext);
 
-    const [postsData, setPostsData] = useState([])
+  const [postsData, setPostsData] = useState([])
 
-    function getUserAndPostsData() {
-        api
-            .getPosts(token)
-            .then((res) => {
-                setPostsData(res.data)
-            })
-            .catch((err) => {
-                alert("An error occured while trying to fetch the posts, please refresh the page")
-            })
-    }
+  function getUserAndPostsData() {
+    api
+      .getPosts(token)
+      .then((res) => {
+        setPostsData(res.data)
+      })
+      .catch((err) => {
+        alert("An error occured while trying to fetch the posts, please refresh the page")
+      })
+  }
 
-    useEffect(() => {
-        getUserAndPostsData();
-        // eslint-disable-next-line
-    }, [])
+  useEffect(() => {
+    getUserAndPostsData();
+    // eslint-disable-next-line
+  }, [])
 
-    return (
-        <PageContainer>
-            <HeaderWithSearch />
-            <main>
-                <Title>timeline</Title>
-                <MainContainer>
-                    <Container>
-                        <AddPost></AddPost>
-                        {postsData.length === 0 ? <Message>There are no posts yet</Message> : (postsData &&
-                            postsData.map((postData) => (
-                                <UserPost postData={postData} key={postData.post.id} updatePostData={getUserAndPostsData} />
-                            )))}
-                        <TooltipLikes />
-                    </Container>
-                    <Trending />
-                </MainContainer>
-            </main>
-        </PageContainer>
-    )
+  return (
+    <PageContainer>
+      <HeaderWithSearch />
+      <main>
+        <Title>timeline</Title>
+        <MainContainer>
+          <Container>
+            <AddPost></AddPost>
+            {postsData.length === 0 ? <Message>There are no posts yet</Message> : (postsData &&
+              postsData.map((postData) => (
+                <UserPost postData={postData} key={postData.post.id} updatePostData={getUserAndPostsData} />
+              )))}
+            <TooltipLikes />
+          </Container>
+          <Trending />
+        </MainContainer>
+      </main>
+    </PageContainer>
+  )
 }
 const MainContainer = styled.div`
   display: flex;
   align-items: flex-start;
-  gap: 25px;
+  max-width: 100%;
 `;
 
 const Container = styled.div`
-  width: 50vw;
+  width: 50%;
   max-width: 611px;
   margin: 0px auto;
+  @media (max-width:950px){
+    width: 100%;
+  }
 `
 
 const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  @media (max-width: 950px){
+    main{
+      width: 100%;
+    }
+  }
 `;
 
 const Title = styled.div`

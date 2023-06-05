@@ -136,6 +136,11 @@ const HeaderContainer = styled.div`
     background: #151515;
     color: #FFFFFF;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    @media (max-width: 950px){  
+        width: 100vw;
+        left: 0;
+        top: 0;
+    }
 `
 
 const Titulo = styled.h1`
@@ -195,6 +200,9 @@ const SearchBar = styled.div`
         box-shadow: 0 0 0 0;
         outline: 0;
     }   
+    @media (max-width: 950px){
+        display: none;
+    }
 `
 
 const UsersContainer = styled.div`

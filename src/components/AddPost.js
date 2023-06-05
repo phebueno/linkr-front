@@ -87,6 +87,9 @@ const FormContainer = styled.div`
         font-size: 43px;
         color: #FFFFFF;
     }
+    @media (max-width:950px){
+        width: 100%;
+    }
 `
 
 const Form = styled.form`
