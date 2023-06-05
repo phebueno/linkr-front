@@ -45,6 +45,7 @@ export default function EditPost({ postData, updatePostData, setEditMode }) {
   return (
     <form onSubmit={submitForm}>
       <EditInput
+        data-test="edit-input"
         ref={inputRef}
         onKeyDown={detectEscape}
         name="description"

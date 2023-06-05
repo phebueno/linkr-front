@@ -98,7 +98,7 @@ export default function UserPost({ postData, updatePostData }) {
                             <h1 onClick={() => userPage(postData.id)}>{postData.username}</h1>
                             {userAuthData.username === postData.username ?
                                 <span>
-                                    <FaPencilAlt onClick={()=>setEditMode(!editMode)}/>
+                                    <FaPencilAlt data-test="edit-btn" onClick={()=>setEditMode(!editMode)}/>
                                     <DeletePostModal postId={postData.post.id} updatePostData={updatePostData} />
                                 </span>
                                 : ""}
