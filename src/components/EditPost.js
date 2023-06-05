@@ -68,6 +68,9 @@ font-size: 14px;
 color: #4C4C4C;
 border-radius: 7px;
 overflow:hidden;
+&:disabled{
+    color:#aaa9a9;
+}
 `;
 
 
