@@ -7,12 +7,14 @@ import { useState, useContext, useEffect } from "react";
 import AuthContext from "../../contexts/AuthContext";
 import Trending from "../../components/Trending";
 import api from "../../services/api";
+import LoadingSkeleton from "../../components/LoadingSkeleton.js";
 
 export default function Timeline() {
 
   const { token } = useContext(AuthContext);
 
   const [postsData, setPostsData] = useState([])
+
 
   function getUserAndPostsData() {
     api
@@ -30,25 +32,26 @@ export default function Timeline() {
     // eslint-disable-next-line
   }, [])
 
-  return (
-    <PageContainer>
-      <HeaderWithSearch />
-      <main>
-        <Title>timeline</Title>
-        <MainContainer>
-          <Container>
-            <AddPost></AddPost>
-            {postsData.length === 0 ? <Message>There are no posts yet</Message> : (postsData &&
-              postsData.map((postData) => (
-                <UserPost postData={postData} key={postData.post.id} updatePostData={getUserAndPostsData} />
-              )))}
-            <TooltipLikes />
-          </Container>
-          <Trending />
-        </MainContainer>
-      </main>
-    </PageContainer>
-  )
+    return (
+        <PageContainer>
+            <HeaderWithSearch />
+            <main>
+                <Title>timeline</Title>
+                <MainContainer>
+                    <Container>
+                        <AddPost></AddPost>
+                        {!postsData && <LoadingSkeleton />}
+                        {postsData && postsData.length === 0 ? <Message>There are no posts yet</Message> : (postsData &&
+                            postsData.map((postData) => (
+                                <UserPost postData={postData} key={postData.post.id} updatePostData={getUserAndPostsData} />
+                            )))}
+                        <TooltipLikes />
+                    </Container>
+                    <Trending />
+                </MainContainer>
+            </main>
+        </PageContainer>
+    )
 }
 const MainContainer = styled.div`
   display: flex;
