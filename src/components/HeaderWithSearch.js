@@ -225,5 +225,6 @@ const UsersContainer = styled.div`
         height: 39px;
         border-radius: 39px;
         margin: 14px 12px 16px 17px;
+        object-fit:cover;
     }
 `
