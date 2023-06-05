@@ -65,4 +65,7 @@ const TrendingContainer = styled.aside`
     align-items: center;
     padding: 0 15px;
   }
+  @media (max-width: 950px){
+        display: none;
+    }
 `;

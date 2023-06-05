@@ -168,14 +168,31 @@ const MetadataUrl = styled.div`
         padding: 0;
         margin: 0;
     }
+    @media (max-width:611px){
+        div:first-child{
+            h1{
+                font-size: 11px;
+            }
+            p{
+                font-size: 9px;
+            }
+            h2{
+                font-size: 9px;
+            }
+        }
+        div:last-child{
+        max-width:300px;
+    }
+    
+  }
 `
 
 export const LikeIcon = styled(AiFillHeart)`
-    color: red;
+    color: red;    
 `;
 
 export const NoLikeIcon = styled(AiOutlineHeart)`
-    color: white;
+    color: white;    
 `;
 
 const PostContainer = styled.div`
@@ -211,6 +228,21 @@ const PostContainer = styled.div`
         color: #B7B7B7;
         margin-bottom: 10px;
     }
+    @media (max-width:611px){
+    border-radius:0;
+    h1{
+        font-size: 17px;
+    }
+    p{
+        font-size: 15px;
+    }
+    div:first-child{
+        img{
+            width: 40px;
+            height: 40px;
+        }
+    }
+  }
 `
 
 const LikeContainer = styled.div`
@@ -228,6 +260,12 @@ const LikeContainer = styled.div`
         border-radius: 53px;
         object-fit: cover;
     }
+    @media (max-width:611px){
+    border-radius:0;    
+    p{
+        font-size: 9px;
+    }
+  }
 `
 
 const Main = styled.div`
