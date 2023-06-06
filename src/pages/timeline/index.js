@@ -8,58 +8,74 @@ import AuthContext from "../../contexts/AuthContext";
 import Trending from "../../components/Trending";
 import api from "../../services/api";
 import LoadingSkeleton from "../../components/LoadingSkeleton.js";
+import InfiniteScroll from "react-infinite-scroller";
 
 export default function Timeline() {
-
   const { token } = useContext(AuthContext);
 
-  const [postsData, setPostsData] = useState(undefined)
-
-
+  const [postsData, setPostsData] = useState(undefined);
+  const [loadMore, setLoadMore] = useState(true);
+  const [page, setPage] = useState(0);
   function getUserAndPostsData() {
+    setLoadMore(false);
     api
       .getPosts(token)
       .then((res) => {
-        setPostsData(res.data)
+        const newPosts = postsData? postsData.concat(res.data) : res.data;
+        setPostsData(newPosts);
+        setLoadMore(true);
       })
       .catch((err) => {
-        alert("An error occured while trying to fetch the posts, please refresh the page")
-      })
+        alert(
+          "An error occured while trying to fetch the posts, please refresh the page"
+        );
+        setLoadMore(false);
+      });
   }
 
   useEffect(() => {
     getUserAndPostsData();
     // eslint-disable-next-line
-  }, [])
+  }, []);
 
-    return (
-        <PageContainer>
-            <HeaderWithSearch />
-            <main>
-                <Title>timeline</Title>
-                <MainContainer>
-                    <Container>
-                        <AddPost></AddPost>
-                        {!postsData && <LoadingSkeleton />}
-                        {postsData && postsData.length === 0 ? <Message>There are no posts yet</Message> : (postsData &&
-                            postsData.map((postData) => (
-                                <UserPost postData={postData} key={postData.post.id} updatePostData={getUserAndPostsData} />
-                            )))}
-                        <TooltipLikes />
-                    </Container>
-                    <Trending />
-                </MainContainer>
-            </main>
-        </PageContainer>
-    )
+  return (
+    <PageContainer>
+      <HeaderWithSearch />
+      <main>
+        <Title>timeline</Title>
+        <MainContainer>
+          <Container>
+            <AddPost></AddPost>
+            {!postsData && <LoadingSkeleton />}
+            <InfiniteScroll pageStart={0} loadMore={getUserAndPostsData} hasMore={loadMore}>
+            {postsData && postsData.length === 0 ? (
+              <Message>There are no posts yet</Message>
+            ) : (
+              postsData &&
+              postsData.map((postData) => (
+                <UserPost
+                  postData={postData}
+                  key={postData.post.id}
+                  updatePostData={getUserAndPostsData}
+                />
+              ))
+            )}
+            </InfiniteScroll>
+            <TooltipLikes />
+          </Container>
+          <Trending />
+        </MainContainer>
+      </main>
+    </PageContainer>
+  );
 }
 const MainContainer = styled.div`
   display: flex;
   align-items: flex-start;
   gap: 25px;
   @media (max-width: 950px) {
-    width: 100%;  
-  }  
+    width: 100%;
+  }
 `;
 
 const Container = styled.div`
@@ -69,7 +85,7 @@ const Container = styled.div`
   @media (max-width: 950px) {
     width: 100%;
   }
-`
+`;
 
 const PageContainer = styled.div`
   display: flex;
@@ -90,7 +106,7 @@ const Title = styled.div`
   font-weight: 700;
   font-size: 43px;
   color: #ffffff;
-  img{
+  img {
     margin-left: 20px;
     margin-right: 20px;
     width: 53px;
@@ -98,13 +114,13 @@ const Title = styled.div`
     border-radius: 53px;
     object-fit: cover;
   }
-  @media (max-width: 950px){
-    padding-left:17px;
+  @media (max-width: 950px) {
+    padding-left: 17px;
   }
-  @media (max-width: 611px){
+  @media (max-width: 611px) {
     margin-top: 90px;
-    font-size:33px;
-  }  
+    font-size: 33px;
+  }
 `;
 
 const Message = styled.div`
@@ -112,4 +128,4 @@ const Message = styled.div`
   font-weight: 700;
   font-size: 43px;
   color: #ffffff;
-`
+`;
