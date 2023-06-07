@@ -70,6 +70,12 @@ function editPostById(token, body, postId) {
     return promise
 }
 
+function getNewPostsCount(token, body){
+    const config = createConfig(token);
+    const promise = axios.post(`${BASE_URL}/check/new-posts`, body, config)
+    return promise
+}
+
 const api = {
     getPosts,
     addPost,
@@ -81,7 +87,8 @@ const api = {
     getUserBySearchBar,
     getPostsByUserId,
     deletePostById,
-    editPostById
+    editPostById,
+    getNewPostsCount
 }
 
 export default api;
