@@ -20,8 +20,9 @@ export default function UserPost({ postData, updatePostData }) {
     const { token, userAuthData } = useContext(AuthContext);
     const navigate = useNavigate()
     useEffect(() => {
-        const promise = api.getMetadata(postData.post.url)
-        promise.then(response => {
+        api
+        .getMetadata(postData.post.url)
+        .then(response => {
             if(
                 !response.data.title ||
                 !response.data.description ||
@@ -31,7 +32,7 @@ export default function UserPost({ postData, updatePostData }) {
             const metadata = (response.data);
             setMetadata(metadata);
         })
-        promise.catch(error => {
+       .catch(error => {
             console.error('Erro ao obter os metadados da URL:', error);
         });
     }, []);
