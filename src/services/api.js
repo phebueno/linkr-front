@@ -7,9 +7,14 @@ function createConfig(token) {
 }
 
 //Criar as requisições HTTP para o nosso back
-function getPosts(token) {
+function getPosts(token, query) {
+    let querySearch = '';
+    if(query.firstPost && query.page){
+        querySearch= `?firstPost=${query.firstPost}&page=${query.page}`;
+    };
+    console.log(querySearch);
     const config = createConfig(token);
-    const promise = axios.get(`${BASE_URL}/posts`, config);
+    const promise = axios.get(`${BASE_URL}/posts${querySearch}`, config);
     return promise;
 }
 
