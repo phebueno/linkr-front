@@ -93,6 +93,7 @@ export default function Timeline() {
                   pageStart={page}
                   loadMore={()=>getUserAndPostsData(postsData[0].post.id, page)}
                   hasMore={loadMore}
+                  loader={<LoadingSkeleton />}
                 >
                   {postsData.map((postData, index) => (
                     <UserPost

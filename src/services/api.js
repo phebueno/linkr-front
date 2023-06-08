@@ -46,11 +46,13 @@ function dislikePost(token, postId) {
 
 function getTrending() {
     const promise = axios.get(`${BASE_URL}/trendingtags`)
+    console.log('oi');
     return promise;
 }
 
-function getHashtagPosts(token, hashtagName) {
+function getHashtagPosts(token, hashtagName, query) {
     const config = createConfig(token);
+    //const querySearch = createQuery(query);
     const promise = axios.get(`${BASE_URL}/hashtag/${hashtagName}`, config)
     return promise;
 }
@@ -60,8 +62,9 @@ function getUserBySearchBar(body) {
     return promise;
 }
 
-function getPostsByUserId(token, userId) {
+function getPostsByUserId(token, userId, query) {
     const config = createConfig(token);
+    //const querySearch = createQuery(query);
     const promise = axios.get(`${BASE_URL}/user/${userId}`, config)
     return promise
 }
