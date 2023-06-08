@@ -7,7 +7,7 @@ import AuthContext from "../contexts/AuthContext.js";
 import useForm from "../hooks/useForm.js";
 import api from "../services/api.js";
 
-export default function EditPost({ postData, setEditMode, setDescription }) {
+export default function EditPost({ postData, setEditMode, setPostData }) {
   const { form, handleForm } = useForm({
     description: postData.post.description,
   });
@@ -26,7 +26,13 @@ export default function EditPost({ postData, setEditMode, setDescription }) {
       .editPostById(token, form, postData.post.id)
       .then((res) => {
         console.log("OK!");
-        setDescription(form.description)
+        setPostData({
+          ...postData,
+          post: {
+            ...postData.post,
+            description: form.description,
+          },
+        });
         setEditMode(false);
       })
       .catch((err) => {
@@ -38,8 +44,8 @@ export default function EditPost({ postData, setEditMode, setDescription }) {
 
   function detectEscape(event) {
     if (event.key === "Escape") setEditMode(false);
-    if(event.key ==="Enter" && !event.shiftKey) submitForm(event);
-    event.target.style.height = `${event.target.scrollHeight}px`; 
+    if (event.key === "Enter" && !event.shiftKey) submitForm(event);
+    event.target.style.height = `${event.target.scrollHeight}px`;
   }
 
   return (
@@ -52,7 +58,6 @@ export default function EditPost({ postData, setEditMode, setDescription }) {
         value={form.description}
         onChange={handleForm}
         disabled={disabled}
-
         required
       />
     </form>
@@ -60,18 +65,16 @@ export default function EditPost({ postData, setEditMode, setDescription }) {
 }
 
 const EditInput = styled.textarea`
-width:100%;
-padding: 5px 10px;
-font-family: 'Lato';
-font-style: normal;
-font-weight: 400;
-font-size: 14px;
-color: #4C4C4C;
-border-radius: 7px;
-overflow:hidden;
-&:disabled{
-    color:#aaa9a9;
-}
+  width: 100%;
+  padding: 5px 10px;
+  font-family: "Lato";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  color: #4c4c4c;
+  border-radius: 7px;
+  overflow: hidden;
+  &:disabled {
+    color: #aaa9a9;
+  }
 `;
-
-

@@ -3,72 +3,24 @@ import AddPost from "../../components/AddPost";
 import HeaderWithSearch from "../../components/HeaderWithSearch";
 import TooltipLikes from "../../components/TooltipLikes.js";
 import UserPost from "../../components/UserPost";
-import { useState, useContext, useEffect } from "react";
-import AuthContext from "../../contexts/AuthContext";
 import Trending from "../../components/Trending";
 import api from "../../services/api";
 import LoadingSkeleton from "../../components/LoadingSkeleton.js";
-import { useInterval } from "../../hooks/useInterval.js";
 import { TfiReload } from "react-icons/tfi";
 import InfiniteScroll from "react-infinite-scroller";
+import useGetPostsData from "../../hooks/useGetPostsData.js";
 
 export default function Timeline() {
-  const { token } = useContext(AuthContext);
 
-  const [postsData, setPostsData] = useState(undefined);
-  const [seconds, setSeconds] = useState(0);
-  const [newPostNumber, setNewPostNumber] = useState(0);
-  const [loadMore, setLoadMore] = useState(true);
-  const [page, setPage] = useState(1);
-
-  useInterval(() => {
-    setSeconds(seconds + 1);
-    if (seconds === 15) {
-      if (postsData) {
-        api
-          .getNewPostsCount(token, {
-            lastCreatedAt: postsData[0].post.createdAt,
-          })
-          .then((res) => setNewPostNumber(Number(res.data.count)))
-          .catch((err) => console.log(err));
-      }
-      setSeconds(0);
-    }
-  });
-
-  function getUserAndPostsData(firstPost, pageRef, partialUpdate) {
-    const query = {firstPost, page:pageRef+1};
-    setLoadMore(false);
-    api
-      .getPosts(token, query)
-      .then((res) => {
-        //se não tiver post de referência, foi requisição de atualização
-        let newPosts = '';
-        if(firstPost){
-            newPosts = postsData.concat(res.data);
-            setPage(page+1)
-        }
-        else{
-            newPosts = res.data;
-            setNewPostNumber(0);
-            setPage(1);
-        }
-        setPostsData(newPosts);
-        //se receber a última requisição vazia, não carrega mais posts
-        res.data.length!==0 ? setLoadMore(true) : setLoadMore(false);        
-      })
-      .catch((err) => {
-        alert(
-          "An error occured while trying to fetch the posts, please refresh the page"
-        );
-        setLoadMore(false);
-      });
-  }
-
-  useEffect(() => {
-    getUserAndPostsData();
-    // eslint-disable-next-line
-  }, []);
+  const {
+    newPostNumber,
+    getUserAndPostsData,
+    postsData,
+    page,
+    loadMore,
+    setPostsData,
+  } = useGetPostsData(api.getPosts);
+  
   return (
     <PageContainer>
       <HeaderWithSearch />
@@ -78,7 +30,7 @@ export default function Timeline() {
           <Container>
             <AddPost></AddPost>
             {newPostNumber !== 0 && (
-              <LoadPostsBtn onClick={()=>getUserAndPostsData()}>
+              <LoadPostsBtn onClick={() => getUserAndPostsData()}>
                 {newPostNumber} new posts, load more!{" "}
                 <TfiReload style={{ fontSize: "25px" }} />
               </LoadPostsBtn>
@@ -91,17 +43,17 @@ export default function Timeline() {
               postsData && (
                 <InfiniteScroll
                   pageStart={page}
-                  loadMore={()=>getUserAndPostsData(postsData[0].post.id, page)}
+                  loadMore={() =>
+                    getUserAndPostsData(postsData[0].post.id, page)
+                  }
                   hasMore={loadMore}
                   loader={<LoadingSkeleton />}
                 >
                   {postsData.map((postData, index) => (
                     <UserPost
-                      postData={postData}
+                      postInfo={postData}
                       key={index}
                       updatePostData={getUserAndPostsData}
-                      page={page}
-                      firstPost={postsData[0].post.id}
                       postsData={postsData}
                       setPostsData={setPostsData}
                     />

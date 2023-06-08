@@ -8,20 +8,21 @@ import DeletePostModal from "./DeletePostModal.js";
 import AuthContext from "../contexts/AuthContext.js";
 import { useNavigate } from "react-router-dom";
 import EditPost from "./EditPost.js";
+import getTooltipUsers from "../utils/getTooltipUsers.js";
 
-export default function UserPost({ postData, updatePostData, page, firstPost, postsData, setPostsData  }) {
+export default function UserPost({ postInfo, updatePostData, postsData, setPostsData  }) {
     const [metadata, setMetadata] = useState({
-        title:postData.post.url,
-        description:postData.post.url,
-        url:postData.post.url
+        title:postInfo.post.url,
+        description:postInfo.post.url,
+        url:postInfo.post.url
     });
-    const [description, setDescription] = useState(postData.post.description);
-    const [liked, setLiked] = useState(postData.post.liked);
-    const [likes, setLikes] = useState(postData.post.likes);
+    const [postData, setPostData] = useState(postInfo);
     const [editMode, setEditMode] = useState(false);
     const { token, userAuthData } = useContext(AuthContext);
     const navigate = useNavigate()
     useEffect(() => {
+        console.log('a');
+        setPostData(postInfo);
         api
         .getMetadata(postData.post.url)
         .then(response => {
@@ -37,28 +38,39 @@ export default function UserPost({ postData, updatePostData, page, firstPost, po
        .catch(error => {
             console.error('Erro ao obter os metadados da URL:', error);
         });
-    }, []);
+    }, [postInfo]);
 
     const handleLike = async () => {
         try {
-            if (liked) {
+            if (postData.post.liked) {
                 await api.dislikePost(token, postData.post.id)
                     .then(res => {
-                        setLiked(false);
-                        setLikes(likes-1);
+                        setPostData({
+                            ...postData,
+                            post: {
+                              ...postData.post,
+                              likes: postData.post.likes - 1,
+                              liked: false,
+                            },
+                          });
                     }).catch(error => {
                         console.log(error);
                     });
             } else {
                 await api.likePost(token, postData.post.id)
                     .then(res => {
-                        setLiked(true);
-                        setLikes(likes+1);
+                        setPostData({
+                            ...postData,
+                            post: {
+                              ...postData.post,
+                              likes: postData.post.likes + 1,
+                              liked: true,
+                            },
+                          });
                     }).catch(error => {
                         console.log(error);
                     });
             }
-            setLiked(!liked);
         } catch (error) {
             console.error("Erro ao curtir ou descurtir o post:", error);
         }
@@ -67,21 +79,7 @@ export default function UserPost({ postData, updatePostData, page, firstPost, po
     function userPage(id) {
         navigate(`/user/${id}`)
     }
-    
-    function getTooltipUsers(liked, likes, diffUser){
-        let likeText = '' ;
-        if(!likes) return likeText;
-        if(liked) likeText+='Você';
-        if(!diffUser) return likeText;
-        if(!liked && likes>0) likeText=diffUser;
-        if(liked && likes>1) likeText+=`, ${diffUser}`;
-        const remainingLikes = liked ? likes-2 : likes-1;
-        if(remainingLikes) {
-            likeText += remainingLikes===1 ?  ` e outra 1 pessoa` : ` e outras ${remainingLikes} pessoas`;
-        }
-        return likeText; 
-    }
-
+        
     return (
         <>
             {metadata.title &&
@@ -90,12 +88,12 @@ export default function UserPost({ postData, updatePostData, page, firstPost, po
                         <img src={postData.image} alt={postData.username} />
                         <LikeContainer data-test="tooltip"
                             data-tooltip-id="my-tooltip" 
-                            data-tooltip-content={getTooltipUsers(liked, likes, postData.post.diffUser)} 
+                            data-tooltip-content={getTooltipUsers(postData.post.liked, postData.post.likes, postData.post.diffUser)} 
                             data-tooltip-place="bottom"
                             onClick={handleLike}
                         >
-                            {liked ? <LikeIcon data-test="like-btn" /> : <NoLikeIcon data-test="like-btn"/>}
-                            <p data-test="counter">{likes} likes</p>
+                            {postData.post.liked ? <LikeIcon data-test="like-btn" /> : <NoLikeIcon data-test="like-btn"/>}
+                            <p data-test="counter">{postData.post.likes} likes</p>
                         </LikeContainer>
                     </div>
                     <Main>
@@ -110,9 +108,9 @@ export default function UserPost({ postData, updatePostData, page, firstPost, po
 
                         </PostHeader>
                         {!editMode ? 
-                            <p>{HASHTAG_FORMATTER(description)}</p>
+                            <p>{HASHTAG_FORMATTER(postData.post.description)}</p>
                             : 
-                            <EditPost postData={postData} setEditMode={setEditMode} setDescription={setDescription} />
+                            <EditPost postData={postData} setEditMode={setEditMode} setPostData={setPostData}/>
                         }                        
                         <MetadataUrl>
                             <div onClick={()=>(window.open(`${metadata.url}`))}>
