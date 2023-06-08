@@ -78,7 +78,7 @@ export default function HeaderWithSearch() {
     return (
         <HeaderContainer>
             <Titulo onClick={() => navigate("/timeline")}>linkr</Titulo>
-            <SearchBar><DebounceInput data-test="search" minLength={3} debounceTimeout={300} onChange={(e) => {
+            <SearchBar data-test="search" ><DebounceInput minLength={3} debounceTimeout={300} onChange={(e) => {
                 searchUsers(e)
             }} value={name} placeholder="Search for people"></DebounceInput>
                 <CgSearch></CgSearch>
