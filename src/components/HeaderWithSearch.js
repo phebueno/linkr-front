@@ -29,12 +29,11 @@ export default function HeaderWithSearch() {
         const value = event.target.value
 
         const body = {
-            name: value,
-            token: token
+            name: value
         }
 
         api
-            .getUserBySearchBar(body)
+            .getUserBySearchBar(token, body)
             .then((res) => {
                 setUsers(res.data)
             })

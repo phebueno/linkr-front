@@ -47,7 +47,7 @@ function getHashtagPosts(token, hashtagName) {
     return promise;
 }
 
-function getUserBySearchBar(body, token) {
+function getUserBySearchBar(token, body) {
     const config = createConfig(token);
     const promise = axios.post(`${BASE_URL}/search`, body, config)
     return promise;
@@ -87,11 +87,12 @@ function unfollowUser(token, body) {
 function followers(token) {
     const config = createConfig(token)
     const promise = axios.get(`${BASE_URL}/followers`, config)
+    return promise
+}
 
-function getNewPostsCount(token, body){
+function getNewPostsCount(token, body) {
     const config = createConfig(token);
     const promise = axios.post(`${BASE_URL}/check/new-posts`, body, config)
-
     return promise
 }
 
@@ -109,7 +110,7 @@ const api = {
     editPostById,
     followUser,
     unfollowUser,
-    followers
+    followers,
     getNewPostsCount
 }
 
