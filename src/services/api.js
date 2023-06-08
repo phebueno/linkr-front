@@ -6,13 +6,16 @@ function createConfig(token) {
     return { headers: { Authorization: `Bearer ${token}` } };
 }
 
+function createQuery(query){
+    if(query.firstPost && query.page){
+        return `?firstPost=${query.firstPost}&page=${query.page}`;
+    };
+    return '';
+}
+
 //Criar as requisições HTTP para o nosso back
 function getPosts(token, query) {
-    let querySearch = '';
-    if(query.firstPost && query.page){
-        querySearch= `?firstPost=${query.firstPost}&page=${query.page}`;
-    };
-    console.log(querySearch);
+    const querySearch = createQuery(query);
     const config = createConfig(token);
     const promise = axios.get(`${BASE_URL}/posts${querySearch}`, config);
     return promise;

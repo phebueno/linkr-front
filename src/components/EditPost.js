@@ -7,7 +7,7 @@ import AuthContext from "../contexts/AuthContext.js";
 import useForm from "../hooks/useForm.js";
 import api from "../services/api.js";
 
-export default function EditPost({ postData, updatePostData, setEditMode }) {
+export default function EditPost({ postData, setEditMode, setDescription }) {
   const { form, handleForm } = useForm({
     description: postData.post.description,
   });
@@ -26,7 +26,7 @@ export default function EditPost({ postData, updatePostData, setEditMode }) {
       .editPostById(token, form, postData.post.id)
       .then((res) => {
         console.log("OK!");
-        updatePostData();
+        setDescription(form.description)
         setEditMode(false);
       })
       .catch((err) => {

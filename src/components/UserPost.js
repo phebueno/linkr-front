@@ -9,13 +9,15 @@ import AuthContext from "../contexts/AuthContext.js";
 import { useNavigate } from "react-router-dom";
 import EditPost from "./EditPost.js";
 
-export default function UserPost({ postData, updatePostData }) {
+export default function UserPost({ postData, updatePostData, page, firstPost, postsData, setPostsData  }) {
     const [metadata, setMetadata] = useState({
         title:postData.post.url,
         description:postData.post.url,
         url:postData.post.url
     });
+    const [description, setDescription] = useState(postData.post.description);
     const [liked, setLiked] = useState(postData.post.liked);
+    const [likes, setLikes] = useState(postData.post.likes);
     const [editMode, setEditMode] = useState(false);
     const { token, userAuthData } = useContext(AuthContext);
     const navigate = useNavigate()
@@ -42,14 +44,16 @@ export default function UserPost({ postData, updatePostData }) {
             if (liked) {
                 await api.dislikePost(token, postData.post.id)
                     .then(res => {
-                        updatePostData();
+                        setLiked(false);
+                        setLikes(likes-1);
                     }).catch(error => {
                         console.log(error);
                     });
             } else {
                 await api.likePost(token, postData.post.id)
                     .then(res => {
-                        updatePostData();
+                        setLiked(true);
+                        setLikes(likes+1);
                     }).catch(error => {
                         console.log(error);
                     });
@@ -86,12 +90,12 @@ export default function UserPost({ postData, updatePostData }) {
                         <img src={postData.image} alt={postData.username} />
                         <LikeContainer data-test="tooltip"
                             data-tooltip-id="my-tooltip" 
-                            data-tooltip-content={getTooltipUsers(postData.post.liked, postData.post.likes, postData.post.diffUser)} 
+                            data-tooltip-content={getTooltipUsers(liked, likes, postData.post.diffUser)} 
                             data-tooltip-place="bottom"
                             onClick={handleLike}
                         >
-                            {postData.post.liked ? <LikeIcon data-test="like-btn" /> : <NoLikeIcon data-test="like-btn"/>}
-                            <p data-test="counter">{postData.post.likes} likes</p>
+                            {liked ? <LikeIcon data-test="like-btn" /> : <NoLikeIcon data-test="like-btn"/>}
+                            <p data-test="counter">{likes} likes</p>
                         </LikeContainer>
                     </div>
                     <Main>
@@ -99,16 +103,16 @@ export default function UserPost({ postData, updatePostData }) {
                             <h1 onClick={() => userPage(postData.id)}>{postData.username}</h1>
                             {userAuthData.username === postData.username ?
                                 <span>
-                                    <FaPencilAlt data-test="edit-btn" onClick={()=>setEditMode(!editMode)}/>
-                                    <DeletePostModal postId={postData.post.id} updatePostData={updatePostData} />
+                                    <FaPencilAlt style={{cursor:"pointer"}} data-test="edit-btn" onClick={()=>setEditMode(!editMode)}/>
+                                    <DeletePostModal postId={postData.post.id} updatePostData={updatePostData} postsData={postsData} setPostsData={setPostsData} />
                                 </span>
                                 : ""}
 
                         </PostHeader>
                         {!editMode ? 
-                            <p>{HASHTAG_FORMATTER(postData.post.description)}</p>
+                            <p>{HASHTAG_FORMATTER(description)}</p>
                             : 
-                            <EditPost postData={postData} updatePostData={updatePostData} setEditMode={setEditMode}/>
+                            <EditPost postData={postData} setEditMode={setEditMode} setDescription={setDescription} />
                         }                        
                         <MetadataUrl>
                             <div onClick={()=>(window.open(`${metadata.url}`))}>

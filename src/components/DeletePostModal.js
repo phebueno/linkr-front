@@ -21,6 +21,7 @@ export default function DeletePostModal({ postId, updatePostData }) {
         updatePostData();
         setDisabled(false);
         setIsOpen(false);
+        console.log('funcionou');
       })
       .catch((err) => {
         setDisabled(false);

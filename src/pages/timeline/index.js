@@ -36,7 +36,7 @@ export default function Timeline() {
     }
   });
 
-  function getUserAndPostsData(firstPost, pageRef) {
+  function getUserAndPostsData(firstPost, pageRef, partialUpdate) {
     const query = {firstPost, page:pageRef+1};
     setLoadMore(false);
     api
@@ -99,6 +99,10 @@ export default function Timeline() {
                       postData={postData}
                       key={index}
                       updatePostData={getUserAndPostsData}
+                      page={page}
+                      firstPost={postsData[0].post.id}
+                      postsData={postsData}
+                      setPostsData={setPostsData}
                     />
                   ))}
                 </InfiniteScroll>
