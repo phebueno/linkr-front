@@ -20,6 +20,7 @@ export default function UserPage() {
   const [follow, setFollow] = useState(false)
   const [followers, setFollowers] = useState([])
   const [disabled, setDisabled] = useState(false)
+  const [userIsMe, setUserIsMe] = useState(false)
 
   function getUserAndPostsData() {
     api
@@ -27,6 +28,7 @@ export default function UserPage() {
       .then((res) => {
         setPostsData(res.data.posts)
         setUserData(res.data.user)
+        setUserIsMe(res.data.isMe)
       })
       .catch((err) => {
         alert(err.message)
@@ -75,7 +77,7 @@ export default function UserPage() {
 
   useEffect(() => {
     for (let i = 0; i < followers.length; i++) {
-      if (followers[i].followUserId === id) {
+      if (followers[i].followUserId == id) {
         setFollow(true)
         return
       }
@@ -88,7 +90,7 @@ export default function UserPage() {
       <main>
         <Header follow={follow}>
           <Title><img src={userData.image}></img>{userData.username}'s posts</Title>
-          <button disabled={disabled} onClick={followUser} >{follow ? "Unfollow" : "Follow"}</button>
+          {userIsMe ? "" : <button disabled={disabled} onClick={followUser} >{follow ? "Unfollow" : "Follow"}</button>}
         </Header>
         <MainContainer>
           <Container>
