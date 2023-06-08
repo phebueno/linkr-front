@@ -21,7 +21,6 @@ export default function UserPost({ postInfo, updatePostData, postsData, setPosts
     const { token, userAuthData } = useContext(AuthContext);
     const navigate = useNavigate()
     useEffect(() => {
-        console.log('a');
         setPostData(postInfo);
         api
         .getMetadata(postData.post.url)

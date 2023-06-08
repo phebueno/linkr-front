@@ -1,21 +1,23 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import { useContext } from "react";
+import { useLocation } from "react-router";
 import AuthContext from "../contexts/AuthContext.js";
 import api from "../services/api.js";
 import { useInterval } from "./useInterval.js";
 
 export default function useGetPostsData(getDataFunction, args) {
   const [postsData, setPostsData] = useState(undefined);
-  const [seconds, setSeconds] = useState(0);
+  const [seconds, setSeconds] = useState(1);
   const [newPostNumber, setNewPostNumber] = useState(0);
   const [loadMore, setLoadMore] = useState(true);
   const [page, setPage] = useState(1);
+  const location = useLocation();
   const { token } = useContext(AuthContext);
   //Função que checa por novos posts
   useInterval(() => {
     setSeconds(seconds + 1);
-    if (seconds === 15) {
+    if (location.pathname==="/timeline" && seconds === 15) {
       if (postsData) {
         api
           .getNewPostsCount(token, {
@@ -24,18 +26,16 @@ export default function useGetPostsData(getDataFunction, args) {
           .then((res) => setNewPostNumber(Number(res.data.count)))
           .catch((err) => console.log(err));
       }
-      setSeconds(0);
+      setSeconds(1);
     }
   });
 
   function getUserAndPostsData(firstPost, pageRef, partialUpdate) {
     const query = { firstPost, page: pageRef + 1 };
-    console.log(query);
     setLoadMore(false);
     getDataFunction(token, query, args)
       .then((res) => {
         //se não tiver post de referência, foi requisição de atualização
-        console.log('a');
         let newPosts = "";
         if (firstPost) {
           newPosts = postsData.concat(res.data);

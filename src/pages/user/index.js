@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import HeaderWithSearch from "../../components/HeaderWithSearch";
-import { useParams } from "react-router-dom"
+import { useParams } from "react-router-dom";
 import UserPost from "../../components/UserPost";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -9,50 +9,62 @@ import Trending from "../../components/Trending";
 import { useContext } from "react";
 import AuthContext from "../../contexts/AuthContext";
 import TooltipLikes from "../../components/TooltipLikes.js";
+import InfiniteScroll from "react-infinite-scroller";
+import LoadingSkeleton from "../../components/LoadingSkeleton.js";
+import useGetPostsData from "../../hooks/useGetPostsData.js";
 
 export default function UserPage() {
+  const { id } = useParams();
 
-    const { id } = useParams()
-    const { token } = useContext(AuthContext);
+  const {
+    newPostNumber,
+    getUserAndPostsData,
+    postsData,
+    page,
+    loadMore,
+    setPostsData,
+  } = useGetPostsData(api.getPostsByUserId, id);
 
-    const [postsData, setPostsData] = useState([])
-    const [userData, setUserData] = useState({})
-
-    function getUserAndPostsData(){
-      api
-        .getPostsByUserId(token,id)
-        .then((res) => {
-            setPostsData(res.data.posts)
-            setUserData(res.data.user)
-        })
-        .catch((err) => {
-            alert(err.message)
-        })
-    }
-
-    useEffect(() => {
-        getUserAndPostsData();
-        // eslint-disable-next-line
-    }, [])
-
-    return (
-        <PageContainer>
-            <HeaderWithSearch />
-            <main>
-                <Title><img src={userData.image}></img>{userData.username}'s posts</Title>
-                <MainContainer>
-                    <Container>
-                        {postsData &&
-                            postsData.map((postData) => (
-                                <UserPost postData={postData} key={postData.post.id} updatePostData={getUserAndPostsData}/>
-                            ))}
-                    <TooltipLikes />
-                    </Container>
-                    <Trending />
-                </MainContainer>
-            </main>
-        </PageContainer>
-    )
+  return (
+    <PageContainer>
+      <HeaderWithSearch />
+      <main>
+        <Title>
+          <img src={postsData && postsData.user.image}></img>
+          {postsData && postsData.user.username}'s posts
+        </Title>
+        <MainContainer>
+          <Container>
+            {!postsData && <LoadingSkeleton />}
+            {
+              postsData && (
+                <InfiniteScroll
+                  pageStart={page}
+                  loadMore={() =>
+                    getUserAndPostsData(postsData.posts[0].post.id, page)
+                  }
+                  hasMore={loadMore}
+                  loader={<LoadingSkeleton />}
+                >
+                  {postsData.posts.map((postData, index) => (
+                    <UserPost
+                      postInfo={postData}
+                      key={index}
+                      updatePostData={getUserAndPostsData}
+                      postsData={postsData}
+                      setPostsData={setPostsData}
+                    />
+                  ))}
+                </InfiniteScroll>
+              )
+            }
+            <TooltipLikes />
+          </Container>
+          <Trending />
+        </MainContainer>
+      </main>
+    </PageContainer>
+  );
 }
 
 const MainContainer = styled.div`
@@ -60,7 +72,7 @@ const MainContainer = styled.div`
   align-items: flex-start;
   gap: 25px;
   @media (max-width: 950px) {
-    width: 100%;  
+    width: 100%;
   }
 `;
 
@@ -69,7 +81,7 @@ const Container = styled.div`
   max-width: 611px;
   margin: 0px auto;
   @media (max-width: 950px) {
-    width: 100%;  
+    width: 100%;
   }
 `;
 
@@ -92,7 +104,7 @@ const Title = styled.div`
   font-weight: 700;
   font-size: 43px;
   color: #ffffff;
-  img{
+  img {
     margin-left: 20px;
     margin-right: 20px;
     width: 53px;
@@ -100,11 +112,11 @@ const Title = styled.div`
     border-radius: 53px;
     object-fit: cover;
   }
-  @media (max-width: 950px){
-    padding-left:17px;
+  @media (max-width: 950px) {
+    padding-left: 17px;
   }
-  @media (max-width: 611px){
+  @media (max-width: 611px) {
     margin-top: 90px;
-    font-size:33px;
-  }  
+    font-size: 33px;
+  }
 `;

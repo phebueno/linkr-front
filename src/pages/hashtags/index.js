@@ -7,7 +7,6 @@ import LoadingSkeleton from "../../components/LoadingSkeleton.js";
 import TooltipLikes from "../../components/TooltipLikes.js";
 import Trending from "../../components/Trending.js";
 import UserPost from "../../components/UserPost.js";
-import AuthContext from "../../contexts/AuthContext.js";
 import useGetPostsData from "../../hooks/useGetPostsData.js";
 import useKickOut from "../../hooks/useKickOut.js";
 import api from "../../services/api.js";
