@@ -75,7 +75,7 @@ export default function Timeline() {
             )}
             {!postsData && <LoadingSkeleton />}
             {followers.length === 0 && postsData && postsData.length === 0 ? (
-              <Message>You don't follow anyone yet. Search for new friends!</Message>
+              <Message data-test="message">You don't follow anyone yet. Search for new friends!</Message>
             ) : (
               postsData &&
               postsData.map((postData) => (
