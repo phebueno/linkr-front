@@ -47,8 +47,9 @@ function getHashtagPosts(token, hashtagName) {
     return promise;
 }
 
-function getUserBySearchBar(body) {
-    const promise = axios.post(`${BASE_URL}/search`, body)
+function getUserBySearchBar(body, token) {
+    const config = createConfig(token);
+    const promise = axios.post(`${BASE_URL}/search`, body, config)
     return promise;
 }
 
@@ -70,6 +71,24 @@ function editPostById(token, body, postId) {
     return promise
 }
 
+function followUser(token, body) {
+    const config = createConfig(token)
+    const promise = axios.post(`${BASE_URL}/follow`, body, config)
+    return promise
+}
+
+function unfollowUser(token, body) {
+    const config = createConfig(token)
+    const promise = axios.post(`${BASE_URL}/unfollow`, body, config)
+    return promise
+}
+
+function followers(token) {
+    const config = createConfig(token)
+    const promise = axios.get(`${BASE_URL}/followers`, config)
+    return promise
+}
+
 const api = {
     getPosts,
     addPost,
@@ -81,7 +100,10 @@ const api = {
     getUserBySearchBar,
     getPostsByUserId,
     deletePostById,
-    editPostById
+    editPostById,
+    followUser,
+    unfollowUser,
+    followers
 }
 
 export default api;

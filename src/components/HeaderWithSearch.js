@@ -11,9 +11,10 @@ export default function HeaderWithSearch() {
     const [showLogout, setShowLogout] = useState(false);
     const [name, setName] = useState("")
     const [users, setUsers] = useState([])
+    const [following, setFollowing] = useState(false)
     const navigate = useNavigate()
     const { setToken, setUserAuthData } = useContext(AuthContext);
-    const { userAuthData } = useContext(AuthContext)
+    const { userAuthData, token } = useContext(AuthContext)
     const wrapperRef = useRef(null);
     useOutsideAlerter(wrapperRef);
 
@@ -28,10 +29,12 @@ export default function HeaderWithSearch() {
         const value = event.target.value
 
         const body = {
-            name: value
+            name: value,
+            token: token
         }
 
-        api.getUserBySearchBar(body)
+        api
+            .getUserBySearchBar(body)
             .then((res) => {
                 setUsers(res.data)
             })
@@ -75,12 +78,12 @@ export default function HeaderWithSearch() {
 
     return (
         <HeaderContainer>
-            <Titulo>linkr</Titulo>
+            <Titulo onClick={() => navigate("/timeline")}>linkr</Titulo>
             <SearchBar><DebounceInput data-test="search" minLength={3} debounceTimeout={300} onChange={(e) => {
                 searchUsers(e)
             }} value={name} placeholder="Search for people"></DebounceInput>
                 <CgSearch></CgSearch>
-                <UsersContainer>{users.map((user, index) => <div data-test="user-search" onClick={() => openUserPerfil(user.id)} key={index}><img src={user.image} alt="userImage"></img><p>{user.username}</p></div>)}</UsersContainer>
+                <UsersContainer>{users.map((user, index) => <div data-test="user-search" onClick={() => openUserPerfil(user.id)} key={index}><img src={user.image} alt="userImage"></img><p>{user.username}</p><p>{user.follower ? `following` : ""}</p></div>)}</UsersContainer>
             </SearchBar>
             <Profile ref={wrapperRef}>
                 {!showLogout ?
@@ -248,6 +251,15 @@ const UsersContainer = styled.div`
             font-size: 19px;
             line-height: 23px;
             color: #515151;
+        }
+        p:nth-child(3){
+            margin-left: 20px;
+            font-family: 'Lato';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 19px;
+            line-height: 23px;
+            color: #C5C5C5;
         }
     }
     img{
