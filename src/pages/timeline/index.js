@@ -17,6 +17,7 @@ export default function Timeline() {
   const [postsData, setPostsData] = useState(undefined);
   const [seconds, setSeconds] = useState(0);
   const [newPostNumber, setNewPostNumber] = useState(0);
+  const [followers, setFollowers] = useState([])
 
   useInterval(() => {
     setSeconds(seconds + 1);
@@ -48,6 +49,14 @@ export default function Timeline() {
   }
 
   useEffect(() => {
+
+    api
+      .followers(token)
+      .then(res => {
+        setFollowers(res.data)
+      })
+      .catch(() => console.log("Deu errado"))
+
     getUserAndPostsData();
     // eslint-disable-next-line
   }, []);
@@ -61,12 +70,12 @@ export default function Timeline() {
             <AddPost></AddPost>
             {newPostNumber !== 0 && (
               <LoadPostsBtn onClick={getUserAndPostsData}>
-                {newPostNumber} new posts, load more! <TfiReload style={{fontSize:"25px"}}/>
+                {newPostNumber} new posts, load more! <TfiReload style={{ fontSize: "25px" }} />
               </LoadPostsBtn>
             )}
             {!postsData && <LoadingSkeleton />}
-            {postsData && postsData.length === 0 ? (
-              <Message>There are no posts yet</Message>
+            {followers.length === 0 && postsData && postsData.length === 0 ? (
+              <Message>You don't follow anyone yet. Search for new friends!</Message>
             ) : (
               postsData &&
               postsData.map((postData) => (
@@ -77,6 +86,7 @@ export default function Timeline() {
                 />
               ))
             )}
+            {postsData && postsData.length === 0 && followers.length > 0 ? <Message>No posts found from your friends</Message> : ""}
             <TooltipLikes />
           </Container>
           <Trending />
