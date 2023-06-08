@@ -71,6 +71,7 @@ function editPostById(token, body, postId) {
     return promise
 }
 
+
 function followUser(token, body) {
     const config = createConfig(token)
     const promise = axios.post(`${BASE_URL}/follow`, body, config)
@@ -86,6 +87,11 @@ function unfollowUser(token, body) {
 function followers(token) {
     const config = createConfig(token)
     const promise = axios.get(`${BASE_URL}/followers`, config)
+
+function getNewPostsCount(token, body){
+    const config = createConfig(token);
+    const promise = axios.post(`${BASE_URL}/check/new-posts`, body, config)
+
     return promise
 }
 
@@ -104,6 +110,7 @@ const api = {
     followUser,
     unfollowUser,
     followers
+    getNewPostsCount
 }
 
 export default api;
