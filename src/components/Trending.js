@@ -17,7 +17,7 @@ export default function Trending() {
         "Algo deu errado no carregamento do site. Por favor, recarregue a página."
       );
     });
-  });
+  },[]);
   return (
     <TrendingContainer data-test="trending" >
       <h2>trending</h2>
