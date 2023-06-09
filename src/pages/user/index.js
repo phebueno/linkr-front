@@ -13,7 +13,6 @@ export default function UserPage() {
   const { id } = useParams();
 
   const {
-    newPostNumber,
     getUserAndPostsData,
     postsData,
     page,
@@ -26,7 +25,7 @@ export default function UserPage() {
       <HeaderWithSearch />
       <main>
         <Title>
-          <img src={postsData && postsData.user.image}></img>
+          <img src={postsData && postsData.user.image} alt="userImage"></img>
           {postsData && postsData.user.username}'s posts
         </Title>
         <MainContainer>

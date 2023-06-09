@@ -37,6 +37,7 @@ export default function UserPost({ postInfo, updatePostData, postsData, setPosts
        .catch(error => {
             console.error('Erro ao obter os metadados da URL:', error);
         });
+        // eslint-disable-next-line
     }, [postInfo]);
 
     const handleLike = async () => {

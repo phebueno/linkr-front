@@ -15,7 +15,6 @@ export default function Hashtags() {
   useKickOut();
 
   const {
-    newPostNumber,
     getUserAndPostsData,
     postsData,
     page,
