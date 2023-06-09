@@ -17,11 +17,11 @@ export default function useGetPostsData(getDataFunction, args) {
   //Função que checa por novos posts
   useInterval(() => {
     setSeconds(seconds + 1);
-    if (location.pathname === "/timeline" && seconds === 15) {
-      if (postsData) {
+    if (location.pathname === "/timeline" && seconds === 5) {
+      if (postsData[0]) {
         api
           .getNewPostsCount(token, {
-            lastCreatedAt: postsData[0].post.createdAt,
+            lastCreatedAt: postsData[0].post.createdAt, //o primeiro post da página de ref
           })
           .then((res) => setNewPostNumber(Number(res.data.count)))
           .catch((err) => console.log(err));
