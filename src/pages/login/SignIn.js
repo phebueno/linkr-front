@@ -48,8 +48,8 @@ export default function SignIn() {
             </Banner>
             <Login>
                 <Form onSubmit={login}>
-                    <input data-test="email" type="email" placeholder="email" value={email} onChange={e => setEmail(e.target.value)} />
-                    <input data-test="password" type="password" placeholder="password" value={password} onChange={e => setPassword(e.target.value)} />
+                    <input data-test="email" required type="email" placeholder="email" value={email} onChange={e => setEmail(e.target.value)} />
+                    <input data-test="password" required type="password" placeholder="password" value={password} onChange={e => setPassword(e.target.value)} />
                     <button data-test="login-btn" disabled={disabled}>{disabled === false ? "Login" : <Oval
                         height={50}
                         width={50}
