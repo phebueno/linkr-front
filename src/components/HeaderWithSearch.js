@@ -78,9 +78,9 @@ export default function HeaderWithSearch() {
     return (
         <HeaderContainer>
             <Titulo onClick={() => navigate("/timeline")}>linkr</Titulo>
-            <SearchBar data-test="search" ><DebounceInput minLength={3} debounceTimeout={300} onChange={(e) => {
+            <SearchBar><DebounceInput minLength={3} debounceTimeout={300} onChange={(e) => {
                 searchUsers(e)
-            }} value={name} placeholder="Search for people"></DebounceInput>
+            }} value={name} placeholder="Search for people" data-test="search" ></DebounceInput>
                 <CgSearch></CgSearch>
                 <UsersContainer>{users.map((user, index) => <div data-test="user-search" onClick={() => openUserPerfil(user.id)} key={index}><img src={user.image} alt="userImage"></img><p>{user.username}</p><p>{user.follower ? `following` : ""}</p></div>)}</UsersContainer>
             </SearchBar>
