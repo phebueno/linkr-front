@@ -6,8 +6,8 @@ function createConfig(token) {
     return { headers: { Authorization: `Bearer ${token}` } };
 }
 
-function createQuery(query){
-    if(query.firstPost && query.page){
+function createQuery(query) {
+    if (query.firstPost && query.page) {
         return `?firstPost=${query.firstPost}&page=${query.page}`;
     };
     return '';
@@ -106,6 +106,12 @@ function getNewPostsCount(token, body) {
     return promise
 }
 
+function addComment(token, body, postId) {
+    const config = createConfig(token)
+    const promise = axios.post(`${BASE_URL}/comments/${postId}`,body,config)
+    return promise
+}
+
 const api = {
     getPosts,
     addPost,
@@ -121,7 +127,8 @@ const api = {
     followUser,
     unfollowUser,
     followers,
-    getNewPostsCount
+    getNewPostsCount,
+    addComment
 }
 
 export default api;
