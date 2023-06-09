@@ -1,15 +1,26 @@
-import api from "../services/api";
+import { useEffect } from "react";
 import { useState } from "react";
 import styled from "styled-components";
 
 export default function Comment({ data }) {
 
+    const [autho, setAutho] = useState("")
+
+    useEffect(() => {
+        if (data.id === data.userId) {
+            return setAutho("•   post's author")
+        }
+        if(data.follow === true){
+            setAutho("•   following")
+        }
+    }, [])
+
     return (
         <CommentContainer>
             <img src={data.image}></img>
             <Description>
-                <p>{data.username}</p>
-                <span>{data.comment}</span>
+                <Title>{data.username}<span>{autho}</span></Title>
+                <CommentText>{data.comment}</CommentText>
             </Description>
         </CommentContainer>
     )
@@ -40,13 +51,18 @@ const Description = styled.div`
     font-style: normal;
     font-size:14px;
     line-height: 17px;
+`
+const Title = styled.p`
+    color: #F3F3F3;
+    font-weight: 700;
+    margin-bottom: 3px;
     span{
-        color: #ACACAC;
-        font-weight: 400;
+        color: #565656;
+        margin-left: 4px;
     }
-    p{
-        color: #F3F3F3;
-        font-weight: 700;
-        margin-bottom: 3px;
-    }
+`
+
+const CommentText = styled.p`
+    color: #ACACAC;
+    font-weight: 400;
 `
