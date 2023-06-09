@@ -149,7 +149,7 @@ export default function UserPost({ postInfo, updatePostData, postsData, setPosts
                     </PostContainer>
                     {hiddenComments === false ? <></> : <CommentsContainer>
                         {comments.map((comment,index) => <Comment data={comment} key={index}></Comment>)}
-                        <AddComment postId={postData.post.id}></AddComment>
+                        <AddComment postId={postData.post.id} showComments={showComments} postData={postData} setPostData={setPostData}></AddComment>
                     </CommentsContainer>}
                 </>
             }

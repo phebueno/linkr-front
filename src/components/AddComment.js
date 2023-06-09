@@ -5,7 +5,7 @@ import { useContext } from "react";
 import AuthContext from "../contexts/AuthContext";
 import { SlPaperPlane } from "react-icons/sl"
 
-export default function AddComment({ postId }) {
+export default function AddComment({ postId,showComments, postData, setPostData }) {
 
     const { token, userAuthData } = useContext(AuthContext);
     const [comment, setComment] = useState("")
@@ -17,7 +17,8 @@ export default function AddComment({ postId }) {
         }
         api.addComment(token,body,postId)
             .then((res)=>{
-                alert("Comentário adicionado")
+                showComments();
+                setPostData({...postData, comments: Number(postData.comments)+1})
             })
             .catch((err)=>{
                 alert("Todos os campos são obrigatórios")
