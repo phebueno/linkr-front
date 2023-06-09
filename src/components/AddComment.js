@@ -21,8 +21,7 @@ export default function AddComment({ postId }) {
             })
             .catch((err)=>{
                 alert("Todos os campos são obrigatórios")
-            })
-        
+            })        
     }
 
     return (

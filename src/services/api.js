@@ -108,7 +108,13 @@ function getNewPostsCount(token, body) {
 
 function addComment(token, body, postId) {
     const config = createConfig(token)
-    const promise = axios.post(`${BASE_URL}/comments/${postId}`,body,config)
+    const promise = axios.post(`${BASE_URL}/comments/${postId}`, body, config)
+    return promise
+}
+
+function getComments(token, postId) {
+    const config = createConfig(token)
+    const promise = axios.get(`${BASE_URL}/comments/${postId}`, config)
     return promise
 }
 
@@ -128,7 +134,8 @@ const api = {
     unfollowUser,
     followers,
     getNewPostsCount,
-    addComment
+    addComment,
+    getComments
 }
 
 export default api;
