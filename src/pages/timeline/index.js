@@ -3,51 +3,31 @@ import AddPost from "../../components/AddPost";
 import HeaderWithSearch from "../../components/HeaderWithSearch";
 import TooltipLikes from "../../components/TooltipLikes.js";
 import UserPost from "../../components/UserPost";
-import { useState, useContext, useEffect } from "react";
-import AuthContext from "../../contexts/AuthContext";
 import Trending from "../../components/Trending";
 import api from "../../services/api";
 import LoadingSkeleton from "../../components/LoadingSkeleton.js";
-import { useInterval } from "../../hooks/useInterval.js";
 import { TfiReload } from "react-icons/tfi";
+import InfiniteScroll from "react-infinite-scroller";
+import useGetPostsData from "../../hooks/useGetPostsData.js";
+import { useEffect } from "react";
+import { useContext } from "react";
+import AuthContext from "../../contexts/AuthContext.js";
+import { useState } from "react";
+
 
 export default function Timeline() {
   const { token } = useContext(AuthContext);
-
-  const [postsData, setPostsData] = useState(undefined);
-  const [seconds, setSeconds] = useState(0);
-  const [newPostNumber, setNewPostNumber] = useState(0);
-  const [followers, setFollowers] = useState([])
-
-  useInterval(() => {
-    setSeconds(seconds + 1);
-    if (seconds === 15) {
-      if (postsData) {
-        api
-          .getNewPostsCount(token, {
-            lastCreatedAt: postsData[0].post.createdAt,
-          })
-          .then((res) => setNewPostNumber(Number(res.data.count)))
-          .catch((err) => console.log(err));
-      }
-      setSeconds(0);
-    }
-  });
-
-  function getUserAndPostsData() {
-    api
-      .getPosts(token)
-      .then((res) => {
-        setPostsData(res.data);
-        setNewPostNumber(0);
-      })
-      .catch((err) => {
-        alert(
-          "An error occured while trying to fetch the posts, please refresh the page"
-        );
-      });
-  }
-
+  const [followers, setFollowers] = useState([]);
+  
+  const {
+    newPostNumber,
+    getUserAndPostsData,
+    postsData,
+    page,
+    loadMore,
+    setPostsData,
+  } = useGetPostsData(api.getPosts);
+  
   useEffect(() => {
 
     api
@@ -60,6 +40,7 @@ export default function Timeline() {
     getUserAndPostsData();
     // eslint-disable-next-line
   }, []);
+
   return (
     <PageContainer>
       <HeaderWithSearch />
@@ -69,22 +50,37 @@ export default function Timeline() {
           <Container>
             <AddPost></AddPost>
             {newPostNumber !== 0 && (
-              <LoadPostsBtn onClick={getUserAndPostsData}>
-                {newPostNumber} new posts, load more! <TfiReload style={{ fontSize: "25px" }} />
+              <LoadPostsBtn onClick={() => getUserAndPostsData()}>
+                {newPostNumber} new posts, load more!{" "}
+                <TfiReload style={{ fontSize: "25px" }} />
               </LoadPostsBtn>
             )}
             {!postsData && <LoadingSkeleton />}
+
             {followers.length === 0 && postsData && postsData.length === 0 ? (
               <Message data-test="message">You don't follow anyone yet. Search for new friends!</Message>
+
             ) : (
-              postsData &&
-              postsData.map((postData) => (
-                <UserPost
-                  postData={postData}
-                  key={postData.post.id}
-                  updatePostData={getUserAndPostsData}
-                />
-              ))
+              postsData && (
+                <InfiniteScroll
+                  pageStart={page}
+                  loadMore={() =>
+                    getUserAndPostsData(postsData[0].post.id, page)
+                  }
+                  hasMore={loadMore}
+                  loader={<LoadingSkeleton />}
+                >
+                  {postsData.map((postData, index) => (
+                    <UserPost
+                      postInfo={postData}
+                      key={index}
+                      updatePostData={getUserAndPostsData}
+                      postsData={postsData}
+                      setPostsData={setPostsData}
+                    />
+                  ))}
+                </InfiniteScroll>
+              )
             )}
             {postsData && postsData.length === 0 && followers.length > 0 ? <Message>No posts found from your friends</Message> : ""}
             <TooltipLikes />
@@ -105,10 +101,10 @@ const LoadPostsBtn = styled.button`
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
   border: none;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
 
   font-family: "Lato";
   font-size: 16px;

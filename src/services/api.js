@@ -6,10 +6,18 @@ function createConfig(token) {
     return { headers: { Authorization: `Bearer ${token}` } };
 }
 
+function createQuery(query){
+    if(query.firstPost && query.page){
+        return `?firstPost=${query.firstPost}&page=${query.page}`;
+    };
+    return '';
+}
+
 //Criar as requisições HTTP para o nosso back
-function getPosts(token) {
+function getPosts(token, query) {
+    const querySearch = createQuery(query);
     const config = createConfig(token);
-    const promise = axios.get(`${BASE_URL}/posts`, config);
+    const promise = axios.get(`${BASE_URL}/posts${querySearch}`, config);
     return promise;
 }
 
@@ -41,9 +49,10 @@ function getTrending() {
     return promise;
 }
 
-function getHashtagPosts(token, hashtagName) {
+function getHashtagPosts(token, query, hashtagName) {
     const config = createConfig(token);
-    const promise = axios.get(`${BASE_URL}/hashtag/${hashtagName}`, config)
+    const querySearch = createQuery(query);
+    const promise = axios.get(`${BASE_URL}/hashtag/${hashtagName}${querySearch}`, config)
     return promise;
 }
 
@@ -53,9 +62,10 @@ function getUserBySearchBar(token, body) {
     return promise;
 }
 
-function getPostsByUserId(token, userId) {
+function getPostsByUserId(token, query, userId) {
     const config = createConfig(token);
-    const promise = axios.get(`${BASE_URL}/user/${userId}`, config)
+    const querySearch = createQuery(query);
+    const promise = axios.get(`${BASE_URL}/user/${userId}${querySearch}`, config)
     return promise
 }
 

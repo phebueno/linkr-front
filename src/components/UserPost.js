@@ -8,56 +8,72 @@ import DeletePostModal from "./DeletePostModal.js";
 import AuthContext from "../contexts/AuthContext.js";
 import { useNavigate } from "react-router-dom";
 import EditPost from "./EditPost.js";
+import getTooltipUsers from "../utils/getTooltipUsers.js";
 import { AiOutlineComment } from "react-icons/ai"
 
-export default function UserPost({ postData, updatePostData }) {
+export default function UserPost({ postInfo, updatePostData, postsData, setPostsData  }) {
     const [metadata, setMetadata] = useState({
-        title: postData.post.url,
-        description: postData.post.url,
-        url: postData.post.url
+        title:postInfo.post.url,
+        description:postInfo.post.url,
+        url:postInfo.post.url
     });
-    const [liked, setLiked] = useState(postData.post.liked);
+    const [postData, setPostData] = useState(postInfo);
     const [editMode, setEditMode] = useState(false);
     const { token, userAuthData } = useContext(AuthContext);
     const navigate = useNavigate()
     const [hiddenComments, setHiddenComments] = useState(false)
 
     useEffect(() => {
+        setPostData(postInfo);
         api
-            .getMetadata(postData.post.url)
-            .then(response => {
-                if (
-                    !response.data.title ||
-                    !response.data.description ||
-                    !response.data.images
-                )
-                    return;
-                const metadata = (response.data);
-                setMetadata(metadata);
-            })
-            .catch(error => {
-                console.error('Erro ao obter os metadados da URL:', error);
-            });
-    }, []);
+        .getMetadata(postData.post.url)
+        .then(response => {
+            if(
+                !response.data.title ||
+                !response.data.description ||
+                !response.data.images
+            )
+                   return;
+            const metadata = (response.data);
+            setMetadata(metadata);
+        })
+       .catch(error => {
+            console.error('Erro ao obter os metadados da URL:', error);
+        });
+        // eslint-disable-next-line
+    }, [postInfo]);
 
     const handleLike = async () => {
         try {
-            if (liked) {
+            if (postData.post.liked) {
                 await api.dislikePost(token, postData.post.id)
                     .then(res => {
-                        updatePostData();
+                        setPostData({
+                            ...postData,
+                            post: {
+                              ...postData.post,
+                              likes: postData.post.likes - 1,
+                              liked: false,
+                            },
+                          });
                     }).catch(error => {
                         console.log(error);
                     });
             } else {
                 await api.likePost(token, postData.post.id)
                     .then(res => {
-                        updatePostData();
+                        setPostData({
+                            ...postData,
+                            post: {
+                              ...postData.post,
+                              likes: postData.post.likes + 1,
+                              liked: true,
+                            },
+                          });
                     }).catch(error => {
                         console.log(error);
                     });
             }
-            setLiked(!liked);
         } catch (error) {
             console.error("Erro ao curtir ou descurtir o post:", error);
         }
@@ -66,78 +82,63 @@ export default function UserPost({ postData, updatePostData }) {
     function userPage(id) {
         navigate(`/user/${id}`)
     }
-
-    function getTooltipUsers(liked, likes, diffUser) {
-        let likeText = '';
-        if (!likes) return likeText;
-        if (liked) likeText += 'Você';
-        if (!diffUser) return likeText;
-        if (!liked && likes > 0) likeText = diffUser;
-        if (liked && likes > 1) likeText += `, ${diffUser}`;
-        const remainingLikes = liked ? likes - 2 : likes - 1;
-        if (remainingLikes) {
-            likeText += remainingLikes === 1 ? ` e outra 1 pessoa` : ` e outras ${remainingLikes} pessoas`;
-        }
-        return likeText;
-    }
-
+    
     function showComments() {
         if (hiddenComments === true) {
             return setHiddenComments(false)
         }
         setHiddenComments(true)
-    }
-
+    }    
     return (
         <>
             {metadata.title &&
-                <>
-                    <PostContainer data-test="post">
-                        <div>
-                            <img src={postData.image} alt={postData.username} />
-                            <LikeContainer data-test="tooltip"
-                                data-tooltip-id="my-tooltip"
-                                data-tooltip-content={getTooltipUsers(postData.post.liked, postData.post.likes, postData.post.diffUser)}
-                                data-tooltip-place="bottom"
-                                onClick={handleLike}
-                            >
-                                {postData.post.liked ? <LikeIcon data-test="like-btn" /> : <NoLikeIcon data-test="like-btn" />}
-                                <p data-test="counter">{postData.post.likes} likes</p>
-                            </LikeContainer>
-                            <Comments onClick={() => showComments()}><AiOutlineComment></AiOutlineComment><p>{postData.comments} comments</p></Comments>
-                        </div>
-                        <Main>
-                            <PostHeader>
-                                <h1 onClick={() => userPage(postData.id)}>{postData.username}</h1>
-                                {userAuthData.username === postData.username ?
-                                    <span>
-                                        <FaPencilAlt data-test="edit-btn" onClick={() => setEditMode(!editMode)} />
-                                        <DeletePostModal postId={postData.post.id} updatePostData={updatePostData} />
-                                    </span>
-                                    : ""}
+            <>
+                <PostContainer data-test="post">
+                    <div>
+                        <img src={postData.image} alt={postData.username} />
+                        <LikeContainer data-test="tooltip"
+                            data-tooltip-id="my-tooltip" 
+                            data-tooltip-content={getTooltipUsers(postData.post.liked, postData.post.likes, postData.post.diffUser)} 
+                            data-tooltip-place="bottom"
+                            onClick={handleLike}
+                        >
+                            {postData.post.liked ? <LikeIcon data-test="like-btn" /> : <NoLikeIcon data-test="like-btn"/>}
+                            <p data-test="counter">{postData.post.likes} likes</p>
+                        </LikeContainer>
+                        <Comments onClick={() => showComments()}><AiOutlineComment></AiOutlineComment><p>{postData.comments} comments</p></Comments>
+                    </div>
+                    <Main>
+                        <PostHeader>
+                            <h1 onClick={() => userPage(postData.id)}>{postData.username}</h1>
+                            {userAuthData.username === postData.username ?
+                                <span>
+                                    <FaPencilAlt style={{cursor:"pointer"}} data-test="edit-btn" onClick={()=>setEditMode(!editMode)}/>
+                                    <DeletePostModal postId={postData.post.id} updatePostData={updatePostData} postsData={postsData} setPostsData={setPostsData} />
+                                </span>
+                                : ""}
 
-                            </PostHeader>
-                            {!editMode ?
-                                <p>{HASHTAG_FORMATTER(postData.post.description)}</p>
-                                :
-                                <EditPost postData={postData} updatePostData={updatePostData} setEditMode={setEditMode} />
-                            }
-                            <MetadataUrl>
-                                <div onClick={() => (window.open(`${metadata.url}`))}>
-                                    <h1>{metadata.title}</h1>
-                                    <p>{metadata.description}</p>
-                                    <h2>{metadata.url}</h2>
-                                </div>
-                                <div>
-                                    {metadata.images && metadata.images.length > 0 && (
-                                        <IMAGE src={metadata.images[0]} alt={metadata.title} />
-                                    )}
-                                </div>
-                            </MetadataUrl>
-                        </Main>
-                    </PostContainer>
-                    {hiddenComments === false ? <></> : <CommentsContainer><img src={postData.image} alt="user-image"></img></CommentsContainer>}
-                </>
+                        </PostHeader>
+                        {!editMode ? 
+                            <p>{HASHTAG_FORMATTER(postData.post.description)}</p>
+                            : 
+                            <EditPost postData={postData} setEditMode={setEditMode} setPostData={setPostData}/>
+                        }                        
+                        <MetadataUrl>
+                            <div onClick={()=>(window.open(`${metadata.url}`))}>
+                                <h1>{metadata.title}</h1>
+                                <p>{metadata.description}</p>
+                                <h2>{metadata.url}</h2>
+                            </div>
+                            <div>
+                                {metadata.images && metadata.images.length > 0 && (
+                                    <IMAGE src={metadata.images[0]} alt={metadata.title} />
+                                )}
+                            </div>
+                        </MetadataUrl>
+                    </Main>
+                </PostContainer>
+                {hiddenComments === false ? <></> : <CommentsContainer><img src={postData.image} alt="user-image"></img></CommentsContainer>}
+            </>
             }
         </>
     )
