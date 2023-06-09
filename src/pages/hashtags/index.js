@@ -1,4 +1,3 @@
-import { useContext, useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import { useParams } from "react-router";
 import styled from "styled-components";
