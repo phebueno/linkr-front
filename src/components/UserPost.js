@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import EditPost from "./EditPost.js";
 import getTooltipUsers from "../utils/getTooltipUsers.js";
 import { AiOutlineComment } from "react-icons/ai"
+import AddComment from "./AddComment";
 
 export default function UserPost({ postInfo, updatePostData, postsData, setPostsData  }) {
     const [metadata, setMetadata] = useState({
@@ -137,7 +138,7 @@ export default function UserPost({ postInfo, updatePostData, postsData, setPosts
                         </MetadataUrl>
                     </Main>
                 </PostContainer>
-                {hiddenComments === false ? <></> : <CommentsContainer><img src={postData.image} alt="user-image"></img></CommentsContainer>}
+                {hiddenComments === false ? <></> : <CommentsContainer><AddComment postId={postData.post.id}></AddComment></CommentsContainer>}
             </>
             }
         </>
@@ -328,9 +329,7 @@ const Comments = styled.div`
 const CommentsContainer = styled.div`
     width: 100%;
     background-color: #1e1e1e;
-    img{
-        width: 39px;
-        height: 39px;
-        border-radius: 39px;
-    }
+    margin-top: -15px;
+    margin-bottom: 15px;
+    border-radius: 0px 0px 16px 16px;
 `
