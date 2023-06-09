@@ -36,10 +36,10 @@ export default function SignUp() {
             </Banner>
             <Login>
                 <Form onSubmit={register}>
-                    <input data-test="email" type="email" placeholder="email" value={email} onChange={e => setEmail(e.target.value)} />
-                    <input data-test="password" type="password" placeholder="password" value={password} onChange={e => setPassword(e.target.value)} />
-                    <input data-test="username" placeholder="username" value={username} onChange={e => setUsername(e.target.value)} />
-                    <input data-test="picture-url" placeholder="picture" value={picture} onChange={e => setPicture(e.target.value)} />
+                    <input data-test="email" required type="email" placeholder="email" value={email} onChange={e => setEmail(e.target.value)} />
+                    <input data-test="password" required type="password" placeholder="password" value={password} onChange={e => setPassword(e.target.value)} />
+                    <input data-test="username" required placeholder="username" value={username} onChange={e => setUsername(e.target.value)} />
+                    <input data-test="picture-url" required placeholder="picture" value={picture} onChange={e => setPicture(e.target.value)} />
                     <button data-test="sign-up-btn" disabled={disabled}>{disabled === false ? "SignUp" : <Oval
                         height={50}
                         width={50}
