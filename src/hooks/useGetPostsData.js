@@ -17,7 +17,7 @@ export default function useGetPostsData(getDataFunction, args) {
   //Função que checa por novos posts
   useInterval(() => {
     setSeconds(seconds + 1);
-    if (location.pathname==="/timeline" && seconds === 15) {
+    if (location.pathname === "/timeline" && seconds === 15) {
       if (postsData) {
         api
           .getNewPostsCount(token, {
@@ -38,7 +38,16 @@ export default function useGetPostsData(getDataFunction, args) {
         //se não tiver post de referência, foi requisição de atualização
         let newPosts = "";
         if (firstPost) {
-          newPosts = postsData.concat(res.data);
+          /**
+          No primeiro caso, há mais estrutura dentro da resposta. Então, adicionamos apenas 
+          os posts no loading
+           */
+          if (res.data.posts) {
+            const aux = postsData.posts.concat(res.data.posts);
+            newPosts = { ...postsData, posts: aux };
+          } else {
+            newPosts = postsData.concat(res.data);
+          }
           setPage(page + 1);
         } else {
           newPosts = res.data;
@@ -47,12 +56,18 @@ export default function useGetPostsData(getDataFunction, args) {
         }
         setPostsData(newPosts);
         //se receber a última requisição vazia, não carrega mais posts
-        res.data.length !== 0 ? setLoadMore(true) : setLoadMore(false);
+        if (
+          (!res.data.posts && res.data.length !== 0) ||
+          (res.data.posts && res.data.posts.length !== 0)
+        )
+          setLoadMore(true);
+        else setLoadMore(false);
       })
       .catch((err) => {
         alert(
           "An error occured while trying to fetch the posts, please refresh the page"
         );
+        console.log(err);
         setLoadMore(false);
       });
   }
@@ -60,7 +75,7 @@ export default function useGetPostsData(getDataFunction, args) {
   useEffect(() => {
     getUserAndPostsData();
     // eslint-disable-next-line
-  }, []);
+  }, [args]);
 
   return {
     newPostNumber,
