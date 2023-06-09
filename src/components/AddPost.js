@@ -30,7 +30,7 @@ export default function AddPost() {
 
     return (
         <>
-            <FormContainer>
+            <FormContainer data-test="publish-box">
                 <div>
                     <img src={userAuthData.img} alt="userImage" />
                 </div>
@@ -44,6 +44,7 @@ export default function AddPost() {
                         value={form.url}
                         disabled={isLoading}
                         required
+                        data-test="link"
                     />
                     <Input
                         type="text"
@@ -52,8 +53,9 @@ export default function AddPost() {
                         onChange={handleChange}
                         value={form.description}
                         disabled={isLoading}
+                        data-test="description"
                     />
-                    <Button type="submit" disabled={isLoading}>
+                    <Button type="submit" disabled={isLoading} data-test="publish-btn">
                         {isLoading ? "Publishing..." : "Publish"}
                     </Button>
                 </Form>

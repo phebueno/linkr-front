@@ -9,9 +9,16 @@ import LoadingSkeleton from "../../components/LoadingSkeleton.js";
 import { TfiReload } from "react-icons/tfi";
 import InfiniteScroll from "react-infinite-scroller";
 import useGetPostsData from "../../hooks/useGetPostsData.js";
+import { useEffect } from "react";
+import { useContext } from "react";
+import AuthContext from "../../contexts/AuthContext.js";
+import { useState } from "react";
+
 
 export default function Timeline() {
-
+  const { token } = useContext(AuthContext);
+  const [followers, setFollowers] = useState([]);
+  
   const {
     newPostNumber,
     getUserAndPostsData,
@@ -21,6 +28,19 @@ export default function Timeline() {
     setPostsData,
   } = useGetPostsData(api.getPosts);
   
+  useEffect(() => {
+
+    api
+      .followers(token)
+      .then(res => {
+        setFollowers(res.data)
+      })
+      .catch(() => console.log("Deu errado"))
+
+    getUserAndPostsData();
+    // eslint-disable-next-line
+  }, []);
+
   return (
     <PageContainer>
       <HeaderWithSearch />
@@ -37,8 +57,9 @@ export default function Timeline() {
             )}
             {!postsData && <LoadingSkeleton />}
 
-            {postsData && postsData.length === 0 ? (
-              <Message>There are no posts yet</Message>
+            {followers.length === 0 && postsData && postsData.length === 0 ? (
+              <Message data-test="message">You don't follow anyone yet. Search for new friends!</Message>
+
             ) : (
               postsData && (
                 <InfiniteScroll
@@ -61,7 +82,7 @@ export default function Timeline() {
                 </InfiniteScroll>
               )
             )}
-
+            {postsData && postsData.length === 0 && followers.length > 0 ? <Message>No posts found from your friends</Message> : ""}
             <TooltipLikes />
           </Container>
           <Trending />

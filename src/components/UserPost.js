@@ -9,6 +9,7 @@ import AuthContext from "../contexts/AuthContext.js";
 import { useNavigate } from "react-router-dom";
 import EditPost from "./EditPost.js";
 import getTooltipUsers from "../utils/getTooltipUsers.js";
+import { AiOutlineComment } from "react-icons/ai"
 
 export default function UserPost({ postInfo, updatePostData, postsData, setPostsData  }) {
     const [metadata, setMetadata] = useState({
@@ -20,6 +21,8 @@ export default function UserPost({ postInfo, updatePostData, postsData, setPosts
     const [editMode, setEditMode] = useState(false);
     const { token, userAuthData } = useContext(AuthContext);
     const navigate = useNavigate()
+    const [hiddenComments, setHiddenComments] = useState(false)
+
     useEffect(() => {
         setPostData(postInfo);
         api
@@ -79,10 +82,17 @@ export default function UserPost({ postInfo, updatePostData, postsData, setPosts
     function userPage(id) {
         navigate(`/user/${id}`)
     }
-        
+    
+    function showComments() {
+        if (hiddenComments === true) {
+            return setHiddenComments(false)
+        }
+        setHiddenComments(true)
+    }    
     return (
         <>
             {metadata.title &&
+            <>
                 <PostContainer data-test="post">
                     <div>
                         <img src={postData.image} alt={postData.username} />
@@ -95,6 +105,7 @@ export default function UserPost({ postInfo, updatePostData, postsData, setPosts
                             {postData.post.liked ? <LikeIcon data-test="like-btn" /> : <NoLikeIcon data-test="like-btn"/>}
                             <p data-test="counter">{postData.post.likes} likes</p>
                         </LikeContainer>
+                        <Comments onClick={() => showComments()}><AiOutlineComment></AiOutlineComment><p>{postData.comments} comments</p></Comments>
                     </div>
                     <Main>
                         <PostHeader>
@@ -126,6 +137,8 @@ export default function UserPost({ postInfo, updatePostData, postsData, setPosts
                         </MetadataUrl>
                     </Main>
                 </PostContainer>
+                {hiddenComments === false ? <></> : <CommentsContainer><img src={postData.image} alt="user-image"></img></CommentsContainer>}
+            </>
             }
         </>
     )
@@ -285,3 +298,39 @@ const PostHeader = styled.div`
         font-size: 20px;
     }
 `;
+
+const Comments = styled.div`
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 5px;
+    p{
+        font-size: 11px;
+        font-weight: 400;
+        line-height: 13px;
+        text-align: center;
+    }
+    img{
+        width: 53px;
+        height: 53px;
+        border-radius: 53px;
+        object-fit: cover;
+    }
+    @media (max-width:611px){
+    border-radius:0;    
+    p{
+        font-size: 9px;
+    }
+    }
+`
+
+const CommentsContainer = styled.div`
+    width: 100%;
+    background-color: #1e1e1e;
+    img{
+        width: 39px;
+        height: 39px;
+        border-radius: 39px;
+    }
+`

@@ -8,9 +8,14 @@ import TooltipLikes from "../../components/TooltipLikes.js";
 import InfiniteScroll from "react-infinite-scroller";
 import LoadingSkeleton from "../../components/LoadingSkeleton.js";
 import useGetPostsData from "../../hooks/useGetPostsData.js";
+import { useContext } from "react";
+import AuthContext from "../../contexts/AuthContext.js";
+import { useState } from "react";
+import { useEffect } from "react";
 
 export default function UserPage() {
   const { id } = useParams();
+  const { token } = useContext(AuthContext);
 
   const {
     getUserAndPostsData,
@@ -20,14 +25,70 @@ export default function UserPage() {
     setPostsData,
   } = useGetPostsData(api.getPostsByUserId, id);
 
+  const [follow, setFollow] = useState(false)
+  const [followers, setFollowers] = useState([])
+  const [disabled, setDisabled] = useState(false)
+
+  function followUser() {
+    setDisabled("disabled")
+    if (follow === false) {
+      const body = { followId: id }
+      api
+        .followUser(token, body)
+        .then(() => {
+          setFollow(true)
+          setDisabled(false)
+        })
+        .catch(() => {
+          alert("Algo deu errado, por favor recarregue a pagina")
+          setDisabled(false)
+        })
+    } else {
+      const body = { followId: id }
+      api
+        .unfollowUser(token, body)
+        .then(() => {
+          setFollow(false)
+          setDisabled(false)
+        })
+        .catch(() => {
+          alert("Algo deu errado, por favor recarregue a pagina")
+          setDisabled(false)
+        })
+    }
+  }
+
+  useEffect(() => {
+    api
+      .followers(token)
+      .then(res => {
+        setFollowers(res.data)
+      })
+      .catch(() => console.log("Deu errado"))
+    getUserAndPostsData();
+    // eslint-disable-next-line
+  }, [])
+
+  useEffect(() => {
+    for (let i = 0; i < followers.length; i++) {
+      if (followers[i].followUserId == id) {
+        setFollow(true)
+        return
+      }
+    }
+  }, [followers])
+
   return (
     <PageContainer>
       <HeaderWithSearch />
       <main>
+        <Header follow={follow}>
         <Title>
           <img src={postsData && postsData.user.image} alt="userImage"></img>
           {postsData && postsData.user.username}'s posts
         </Title>
+          {postsData && !postsData.isMe && <button disabled={disabled} onClick={followUser} >{follow ? "Unfollow" : "Follow"}</button>}
+        </Header>
         <MainContainer>
           <Container>
             {!postsData && <LoadingSkeleton />}
@@ -53,6 +114,7 @@ export default function UserPage() {
                 </InfiniteScroll>
               )
             }
+
             <TooltipLikes />
           </Container>
           <Trending />
@@ -115,3 +177,21 @@ const Title = styled.div`
     font-size: 33px;
   }
 `;
+
+const Header = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: flex-end;
+  button{
+    width: 112px;
+    height: 31px;
+    background: ${props => props.follow ? "#ffffff" : "#1877F2"};
+    border-radius: 5px;
+    color: ${props => props.follow ? "#1877F2" : "#ffffff"};
+    outline: 0;
+    border: 0;
+    cursor: pointer;
+    margin-bottom: 50px;
+  }
+`
