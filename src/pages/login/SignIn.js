@@ -30,12 +30,12 @@ export default function SignIn() {
             .then(res => {
                 localStorage.setItem("token", res.data.token)
                 localStorage.setItem("userData", JSON.stringify(res.data.userData))
-                setToken(res.data.token)                
+                setToken(res.data.token)
                 setUserAuthData(res.data.userData)
-                navigate('/timeline')                
+                navigate('/timeline')
             })
             .catch(err => {
-                alert("Email ou senha incorretos")
+                alert(err.response.data)
                 setDisabled(false)
             })
     }
