@@ -1,1 +1,48 @@
-# projeto19-linkr-front
+# Linkr
+Um aplicativo de rede social para o compartilhamento de links. Compartilhe links, curta, e siga seus amigos!
+
+Teste à vontade no seguinte link: https://projeto19-linkr-front-ruby.vercel.app/
+
+## Sobre
+
+Este é um aplicativo de uma aplicação web com interface completa para o compartilhamento de links. Todos os conteúdos são persistidas em banco de dados com o uso de uma API cujo repositório está indicado mais adiante. Temos as seguintes opções para o usuário:
+
+- Sign up
+- Login
+- Postagem de links com descrição e possibilidade de uso de hashtags
+- Deleção e edição dos próprios posts
+- Curtir e comentar posts
+- Visualização de "trending" para as hashtags mais utilizadas
+- Opção de seguir e visualizar perfis de outros usuários.
+
+Dentre as features planejadas para o app, temos:
+- Possibilidade de "recompartilhar" posts (o famoso RT do twitter)
+- Integração de tests para o front
+
+## Tecnologias
+Foram utilizadas as seguintes ferramentas para a construção deste app:<br>
+
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+![React Router](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white)
+![Styled Components](https://img.shields.io/badge/styled--components-DB7093?style=for-the-badge&logo=styled-components&logoColor=white)
+![NPM](https://img.shields.io/badge/NPM-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white)
+
+## Como rodar
+
+1. Clone este repositório
+2. Clone o repositório de back-end em https://github.com/phebueno/linkr-front
+3. Siga as intruções para preparar o back-end em https://github.com/wesleymichael/linkr-back
+4. 
+5. Instale dependências
+```bash
+npm i
+```
+5. Rode o front-end com
+```bash
+npm start
+```
+6. Opcionalmente, monte uma build nova do projeto com
+```bash
+npm run build
+```
+7. Finalmente, acesse http://localhost:5000 no seu navegador favorito!
