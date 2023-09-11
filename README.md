@@ -32,17 +32,17 @@ Foram utilizadas as seguintes ferramentas para a construção deste app:<br>
 1. Clone este repositório
 2. Clone o repositório de back-end em https://github.com/phebueno/linkr-front
 3. Siga as intruções para preparar o back-end em https://github.com/wesleymichael/linkr-back
-4. 
-5. Instale dependências
+4. Instale dependências
 ```bash
 npm i
 ```
-5. Rode o front-end com
+5. Crie um .env com a variável REACT_APP_API_URL e atribuia o domínio onde a API estará rodando
+6. Rode o front-end com
 ```bash
 npm start
 ```
-6. Opcionalmente, monte uma build nova do projeto com
+7. Opcionalmente, monte uma build nova do projeto com
 ```bash
 npm run build
 ```
-7. Finalmente, acesse http://localhost:5000 no seu navegador favorito!
+8. Finalmente, acesse http://localhost:3000 no seu navegador favorito!
