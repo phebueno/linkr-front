@@ -1,7 +1,12 @@
 # Linkr
 Um aplicativo de rede social para o compartilhamento de links. Compartilhe links, curta, e siga seus amigos!
 
-Teste à vontade no seguinte link: linkr-front-app.vercel.app
+<p align="center">  
+  <img src=loginPageIMG.PNG?raw=true" alt="login page" height=450/>
+  <img src="feedPageIMG.PNG?raw=true" alt="feed page" height=450/>
+</p>
+
+Teste à vontade no seguinte link:  https://linkr-front-app.vercel.app
 
 ## Sobre
 
