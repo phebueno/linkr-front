@@ -1,7 +1,7 @@
 # Linkr
 Um aplicativo de rede social para o compartilhamento de links. Compartilhe links, curta, e siga seus amigos!
 
-Teste à vontade no seguinte link: https://projeto19-linkr-front-ruby.vercel.app/
+Teste à vontade no seguinte link: linkr-front-app.vercel.app
 
 ## Sobre
 
